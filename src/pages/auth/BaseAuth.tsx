@@ -1,40 +1,19 @@
-import {AppShell, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
+import {AppShell, Box, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
 import BlackLogo from "../../assets/images/logos/Wallet-Friend-logos_black.png";
 import WhiteLogo from "../../assets/images/logos/Wallet-Friend-logos_white.png";
-import {MdPermIdentity} from "react-icons/md"
-import {Route, Switch, useRouteMatch} from "react-router-dom";
+import {useRouteMatch} from "react-router-dom";
 import Login from "./login/Login";
 import WF_Footer from "../components/WF_Footer";
-//import WF_Footer from "../components/WF_Footer";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
-    let {path, url} = useRouteMatch()
-
-    function logoTheme() {
-        if (theme.colorScheme === 'dark') {
-            return <Image src={WhiteLogo}/>;
-        } else {
-            return <Image src={BlackLogo}/>;
-        }
-    }
-
-    function iconView(size: number) {
-        return (
-            <Switch>
-                <Route path={`${url}/1`}>
-                    <MdPermIdentity size={size}
-                                    color={theme.colorScheme === 'dark' ? "white" : "black"}/>
-                </Route>
-            </Switch>
-        );
-    }
+    let path = useRouteMatch();
 
     return (
         <AppShell
             styles={{
                 main: {
-                    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[2],
                 },
             }}
             footer={
@@ -43,31 +22,32 @@ export default function BaseAuth() {
         >
             { /* Desktop view */}
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
-                <Grid grow gutter="xl">
-                    <Grid.Col span={6}>
-                        <Stack align="center">
-                            {logoTheme()}
-                            {iconView(120)}
-                        </Stack>
-                    </Grid.Col>
-                    <Grid.Col span={6}>
-                        <Center>
+                <Box sx={(theme) => ({
+                    padding: theme.spacing.xl,
+                    height: "100%",
+                })}
+                >
+                    <Grid align="center" sx={{height: "inherit"}}>
+                        <Grid.Col span={6}>
+                            <Center>
+                                <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} sx={{maxWidth: 650}}
+                                       withPlaceholder/>
+                            </Center>
+                        </Grid.Col>
+                        <Grid.Col offset={2} span={3}>
                             <Login/>
-                        </Center>
-                    </Grid.Col>
-                </Grid>
+                        </Grid.Col>
+                    </Grid>
+                </Box>
             </MediaQuery>
             { /* Mobile view */}
             <MediaQuery largerThan="md" styles={{display: "none"}}>
-                <Grid grow gutter="xl">
-                    <Stack align="center">
-                        {logoTheme()}
-                        {iconView(50)}
-                        <Login/>
-                    </Stack>
-                </Grid>
+                <Stack align="center">
+                    <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} sx={{maxWidth: 400}}
+                           withPlaceholder/>
+                    <Login/>
+                </Stack>
             </MediaQuery>
-
         </AppShell>
     );
 }
