@@ -1,7 +1,7 @@
 import {Burger, Container, createStyles, Group, Header, Image, useMantineTheme} from "@mantine/core";
-import BlackLogo from "../../assets/images/logos/Wallet-Friend-Simple-logos_black.png";
-import WhiteLogo from "../../assets/images/logos/Wallet-Friend-Simple-logos_white.png";
-import LightAndDarkModeButton from "./LightDarkButton";
+import BlackLogo from "../../Assets/Images/Logos/Wallet-Friend-Simple-logos_black.png";
+import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-Simple-logos_white.png";
+import ThemeButton from "../../Components/ThemeButton/ThemeButton";
 import {useDisclosure} from "@mantine/hooks";
 import {useRouteMatch} from "react-router-dom";
 
@@ -37,7 +37,7 @@ export default function WFHeader() {
                     <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" hidden={path === "/auth"}/>
                     <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} width={200} withPlaceholder/>
                 </Group>
-                <LightAndDarkModeButton/>
+                <ThemeButton/>
             </Container>
         </Header>
     );

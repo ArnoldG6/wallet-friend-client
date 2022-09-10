@@ -1,7 +1,7 @@
 import { ActionIcon, useMantineColorScheme } from '@mantine/core';
 import {MdOutlineNightsStay, MdOutlineWbSunny} from "react-icons/md"
 
-export default function LightAndDarkModeButton() {
+export default function ThemeButton() {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
 

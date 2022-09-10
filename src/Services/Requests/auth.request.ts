@@ -1,7 +1,7 @@
-import http from "../http-common";
-import Auth from "../types/Auth/auth.type";
+import http from "../../Middleware/http-common";
+import Auth from "../../Types/Auth/auth.type";
 
-class AuthServices {
+class AuthRequest {
     login(data: Auth) {
         return http.post<any>("/auth/login", data);
     }
@@ -11,4 +11,4 @@ class AuthServices {
     }
 }
 
-export default new AuthServices();
+export default new AuthRequest();

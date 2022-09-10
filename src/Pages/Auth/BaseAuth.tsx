@@ -1,9 +1,9 @@
 import {AppShell, Box, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
-import BlackLogo from "../../assets/images/logos/Wallet-Friend-logos_black.png";
-import WhiteLogo from "../../assets/images/logos/Wallet-Friend-logos_white.png";
-import Login from "./login/Login";
-import {WFFooter} from "../components/WFFooter";
-import WFHeader from "../components/WFHeader";
+import BlackLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_black.png";
+import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_white.png";
+import Login from "./Login/Login";
+import {WFFooter} from "../../Layouts/Footer/WFFooter";
+import WFHeader from "../../Layouts/Header/WFHeader";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();

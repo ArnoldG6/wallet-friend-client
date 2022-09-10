@@ -1,6 +1,6 @@
-import http from "../http-common";
-import UserFull from "../types/User/user-full.types";
-import User from "../types/User/user.types";
+import http from "../../Middleware/http-common";
+import UserFull from "../../Types/User/user-full.types";
+import User from "../../Types/User/user.types";
 
 class UserServices {
     get(username: string) {

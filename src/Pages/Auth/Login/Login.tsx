@@ -2,10 +2,10 @@ import {Box, Button, Divider, Group, MediaQuery, PasswordInput, TextInput, Space
 import {MdPermIdentity, MdAlternateEmail, MdOutlineLock} from "react-icons/md"
 import {useForm} from "@mantine/form";
 import {Link, useRouteMatch} from "react-router-dom";
+import loginAction from "../../../Services/Actions/Login/login.action";
 
 export default function Login() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let { path, url } = useRouteMatch();
+    let { path } = useRouteMatch();
     const form = useForm({
         initialValues: {
             email: '',
@@ -35,7 +35,7 @@ export default function Login() {
 
             <Divider my="md"/>
 
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form onSubmit={form.onSubmit((values) => loginAction(values))}>
                 <TextInput
                     withAsterisk
                     label="Email"
@@ -64,8 +64,8 @@ export default function Login() {
             <Divider my="md"/>
 
             <Group position="center">
-                <Anchor component={Link} to={`${url}/reset-password`}>Forgot password?</Anchor>
-                <Anchor component={Link} to={`${url}/signup`}>Don't have an account?</Anchor>
+                <Anchor component={Link} to={`${path}/reset-password`}>Forgot password?</Anchor>
+                <Anchor component={Link} to={`${path}/signup`}>Don't have an account?</Anchor>
             </Group>
         </Box>
     );

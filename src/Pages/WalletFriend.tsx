@@ -1,9 +1,8 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import BaseAuth from "./auth/BaseAuth";
-import BaseHome from "./home/BaseHome";
+import BaseAuth from "./Auth/BaseAuth";
+import BaseHome from "./Home/BaseHome";
 import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
 import {useState} from "react";
-import {useHotkeys} from "@mantine/hooks";
 
 export default function WalletFriend() {
     const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
@@ -11,7 +10,6 @@ export default function WalletFriend() {
     const toggleColorScheme = (value?: ColorScheme) =>
         setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
-    useHotkeys([['mod+J', () => toggleColorScheme()]]);
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS theme={{colorScheme}}>
