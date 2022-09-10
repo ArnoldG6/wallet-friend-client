@@ -1,12 +1,10 @@
 import {AppShell, Box, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
-import {AppShell, Burger, Center, Grid, Header, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
 import BlackLogo from "../../assets/images/logos/Wallet-Friend-logos_black.png";
 import WhiteLogo from "../../assets/images/logos/Wallet-Friend-logos_white.png";
 import {useRouteMatch} from "react-router-dom";
 import Login from "./login/Login";
 import {WF_Footer} from "../components/WF_Footer";
 import WF_Header from "../components/WF_Header";
-import LightAndDarkModeButton from "../components/LightDarkButton";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
