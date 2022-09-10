@@ -1,14 +1,12 @@
 import {AppShell, Box, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
 import BlackLogo from "../../assets/images/logos/Wallet-Friend-logos_black.png";
 import WhiteLogo from "../../assets/images/logos/Wallet-Friend-logos_white.png";
-import {useRouteMatch} from "react-router-dom";
 import Login from "./login/Login";
-import {WF_Footer} from "../components/WF_Footer";
-import WF_Header from "../components/WF_Header";
+import {WFFooter} from "../components/WFFooter";
+import WFHeader from "../components/WFHeader";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
-    let path = useRouteMatch();
 
     return (
         <AppShell
@@ -18,10 +16,10 @@ export default function BaseAuth() {
                 },
             }}
             header={
-              <WF_Header/>
+              <WFHeader/>
             }
             footer={
-                <WF_Footer links={[]}/>
+                <WFFooter links={[]}/>
             }
         >
             { /* Desktop view */}

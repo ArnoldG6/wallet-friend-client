@@ -14,21 +14,21 @@ export default function WalletFriend() {
     useHotkeys([['mod+J', () => toggleColorScheme()]]);
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={{colorScheme}}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/auth">
-                        <BaseAuth/>
-                    </Route>
-                    <Route path="/home">
-                        <BaseHome/>
-                    </Route>
-                    <Route exact path="/">
-                        <Redirect to="/auth"/> {/* TODO: Validate if user is logged in or not */}
-                    </Route>
-                </Switch>
-            </BrowserRouter>
-        </MantineProvider>
-            </ColorSchemeProvider>
+            <MantineProvider withGlobalStyles withNormalizeCSS theme={{colorScheme}}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/auth">
+                            <BaseAuth/>
+                        </Route>
+                        <Route path="/home">
+                            <BaseHome/>
+                        </Route>
+                        <Route exact path="/">
+                            <Redirect to="/auth"/> {/* TODO: Validate if user is logged in or not */}
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
+            </MantineProvider>
+        </ColorSchemeProvider>
     );
 }
