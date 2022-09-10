@@ -1,11 +1,12 @@
-import {AppShell, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
+import {AppShell, Burger, Center, Grid, Header, Image, MediaQuery, Stack, useMantineTheme} from "@mantine/core";
 import BlackLogo from "../../assets/images/logos/Wallet-Friend-logos_black.png";
 import WhiteLogo from "../../assets/images/logos/Wallet-Friend-logos_white.png";
 import {MdPermIdentity} from "react-icons/md"
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 import Login from "./login/Login";
-import WF_Footer from "../components/WF_Footer";
-//import WF_Footer from "../components/WF_Footer";
+import {WF_Footer} from "../components/WF_Footer";
+import WF_Header from "../components/WF_Header";
+import LightAndDarkModeButton from "../components/LightDarkButton";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
@@ -37,8 +38,11 @@ export default function BaseAuth() {
                     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
                 },
             }}
+            header={
+              <WF_Header/>
+            }
             footer={
-                <WF_Footer/>
+                <WF_Footer links={[]}/>
             }
         >
             { /* Desktop view */}
@@ -46,6 +50,7 @@ export default function BaseAuth() {
                 <Grid grow gutter="xl">
                     <Grid.Col span={6}>
                         <Stack align="center">
+
                             {logoTheme()}
                             {iconView(120)}
                         </Stack>
