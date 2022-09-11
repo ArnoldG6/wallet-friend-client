@@ -2,7 +2,7 @@ import {AppShell, Box, Center, Grid, Image, MediaQuery, Stack, useMantineTheme} 
 import BlackLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_black.png";
 import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_white.png";
 import Login from "./Login/Login";
-import {WFFooter} from "../../Layouts/Footer/WFFooter";
+import WFFooter from "../../Layouts/Footer/WFFooter";
 import WFHeader from "../../Layouts/Header/WFHeader";
 
 export default function BaseAuth() {
@@ -16,10 +16,10 @@ export default function BaseAuth() {
                 },
             }}
             header={
-              <WFHeader/>
+                <WFHeader/>
             }
             footer={
-                <WFFooter links={[]}/>
+                <WFFooter/>
             }
         >
             { /* Desktop view */}
