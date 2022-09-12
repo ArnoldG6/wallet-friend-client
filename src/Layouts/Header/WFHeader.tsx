@@ -1,14 +1,12 @@
-import {Burger, Container, createStyles, Group, Header, Image, useMantineTheme} from "@mantine/core";
+import {Burger, Container, createStyles, Group, Header, Image, MediaQuery, useMantineTheme} from "@mantine/core";
 import BlackLogo from "../../Assets/Images/Logos/Wallet-Friend-Simple-logos_black.png";
 import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-Simple-logos_white.png";
 import ThemeButton from "../../Components/ThemeButton/ThemeButton";
-import {useDisclosure} from "@mantine/hooks";
 import {useRouteMatch} from "react-router-dom";
 import LogoutButton from "../../Components/LogoutButton/LogoutButton";
 
-export default function WFHeader() {
+export default function WFHeader({opened, setOpened}: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     let {path} = useRouteMatch();
-    const [opened, {toggle}] = useDisclosure(false);
 
     const HEADER_HEIGHT = 60;
 
@@ -20,12 +18,6 @@ export default function WFHeader() {
             alignItems: 'center',
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
         },
-
-        burger: {
-            [theme.fn.largerThan('sm')]: {
-                display: 'none',
-            },
-        },
     }));
 
     const theme = useMantineTheme();
@@ -35,8 +27,9 @@ export default function WFHeader() {
         <Header height={HEADER_HEIGHT} sx={{borderBottom: 0}} mb={120}>
             <Container className={classes.inner} fluid>
                 <Group>
-                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm"
-                            hidden={path === "/auth"}/>
+                    <MediaQuery largerThan="sm" styles={{display: 'none'}}>
+                        <Burger opened={opened} onClick={() => { setOpened((o) => !o) }} size="sm" hidden={path === "/auth"}/>
+                    </MediaQuery>
                     <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} width={200} withPlaceholder/>
                 </Group>
                 <Group>
