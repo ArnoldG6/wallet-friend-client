@@ -13,6 +13,7 @@ class AuthRequest {
                 const cookies = new Cookies();
                 cookies.set("access_token", response.data.access_token, {path: "/", sameSite: "lax"});
                 cookies.set("user_email", response.data.user.email, {path: "/", sameSite: "lax"});
+                window.location.href = "/home";
             })
             .catch(function (error) {
                 if (error.response) {
