@@ -5,6 +5,7 @@ import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
 import {useState} from "react";
 import {NotificationsProvider} from "@mantine/notifications";
 import {useCookies} from "react-cookie";
+import PrivateRoute from "../Routes/PrivateRoute";
 
 export default function WalletFriend() {
     const [cookies, setCookie] = useCookies(['theme']);
@@ -31,9 +32,9 @@ export default function WalletFriend() {
                             <Route path="/auth">
                                 <BaseAuth/>
                             </Route>
-                            <Route path="/home">
+                            <PrivateRoute path="/home">
                                 <BaseHome/>
-                            </Route>
+                            </PrivateRoute>
                             <Route exact path="/">
                                 <Redirect to="/auth"/> {/* TODO: Validate if user is logged in or not */}
                             </Route>
