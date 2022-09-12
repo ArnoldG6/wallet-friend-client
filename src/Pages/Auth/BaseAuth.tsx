@@ -4,9 +4,11 @@ import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_white.png";
 import Login from "./Login/Login";
 import WFFooter from "../../Layouts/Footer/WFFooter";
 import WFHeader from "../../Layouts/Header/WFHeader";
+import {useState} from "react";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
+    const [opened, setOpened] = useState(false);
 
     return (
         <AppShell
@@ -16,7 +18,7 @@ export default function BaseAuth() {
                 },
             }}
             header={
-                <WFHeader/>
+                <WFHeader opened={opened} setOpened={setOpened}/>
             }
             footer={
                 <WFFooter/>
