@@ -4,6 +4,7 @@ import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-Simple-logos_whit
 import ThemeButton from "../../Components/ThemeButton/ThemeButton";
 import {useDisclosure} from "@mantine/hooks";
 import {useRouteMatch} from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton/LogoutButton";
 
 export default function WFHeader() {
     let {path} = useRouteMatch();
@@ -34,10 +35,14 @@ export default function WFHeader() {
         <Header height={HEADER_HEIGHT} sx={{borderBottom: 0}} mb={120}>
             <Container className={classes.inner} fluid>
                 <Group>
-                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" hidden={path === "/auth"}/>
+                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm"
+                            hidden={path === "/auth"}/>
                     <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} width={200} withPlaceholder/>
                 </Group>
-                <ThemeButton/>
+                <Group>
+                    <ThemeButton/>
+                    <LogoutButton/>
+                </Group>
             </Container>
         </Header>
     );
