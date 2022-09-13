@@ -4,6 +4,10 @@ import WhiteLogo from "../../Assets/Images/Logos/Wallet-Friend-logos_white.png";
 import Login from "./Login/Login";
 import WFFooter from "../../Layouts/Footer/WFFooter";
 import WFHeader from "../../Layouts/Header/WFHeader";
+import SignUp from "./SignUp/SignUp";
+import {Redirect, Route, Switch} from "react-router-dom";
+import PrivateRoute from "../../Routes/PrivateRoute";
+import BaseHome from "../Home/BaseHome";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
@@ -36,9 +40,22 @@ export default function BaseAuth() {
                                        withPlaceholder/>
                             </Center>
                         </Grid.Col>
-                        <Grid.Col offset={2} span={3}>
-                            <Login/>
-                        </Grid.Col>
+                        <Switch>
+                            <Route exact path="/auth">
+                                <Redirect to="/auth/login"/>
+                            </Route>
+                            <Route path="/auth/login">
+                                <Grid.Col offset={2} span={3}>
+                                    <Login/>
+                                </Grid.Col>
+                            </Route>
+                            <Route path="/auth/signup">
+                                <Grid.Col offset={1} span={4}>
+                                    <SignUp/>
+                                </Grid.Col>
+                            </Route>
+                        </Switch>
+
                     </Grid>
                 </Box>
             </MediaQuery>
@@ -47,7 +64,7 @@ export default function BaseAuth() {
                 <Stack align="center">
                     <Image src={theme.colorScheme === 'dark' ? WhiteLogo : BlackLogo} sx={{maxWidth: 400}}
                            withPlaceholder/>
-                    <Login/>
+                    <SignUp/>
                 </Stack>
             </MediaQuery>
         </AppShell>

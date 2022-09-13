@@ -29,10 +29,10 @@ export default function WalletFriend() {
                 <NotificationsProvider>
                     <BrowserRouter>
                         <Switch>
-                            <Route path="/auth">
+                            <Route path="/auth/*">
                                 <BaseAuth/>
                             </Route>
-                            <PrivateRoute path="/home">
+                            <PrivateRoute path="/home/*">
                                 <BaseHome/>
                             </PrivateRoute>
                             <Route exact path="/">
