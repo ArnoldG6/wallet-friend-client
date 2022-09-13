@@ -6,11 +6,11 @@ import WFFooter from "../../Layouts/Footer/WFFooter";
 import WFHeader from "../../Layouts/Header/WFHeader";
 import SignUp from "./SignUp/SignUp";
 import {Redirect, Route, Switch} from "react-router-dom";
-import PrivateRoute from "../../Routes/PrivateRoute";
-import BaseHome from "../Home/BaseHome";
+import {useState} from "react";
 
 export default function BaseAuth() {
     const theme = useMantineTheme();
+    const [opened, setOpened] = useState(false);
 
     return (
         <AppShell
@@ -20,7 +20,7 @@ export default function BaseAuth() {
                 },
             }}
             header={
-                <WFHeader/>
+                <WFHeader opened={opened} setOpened={setOpened}/>
             }
             footer={
                 <WFFooter/>
