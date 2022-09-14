@@ -15,37 +15,44 @@ import {
 } from '@mantine/core';
 import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox, MdCheck, MdOutlineClear} from "react-icons/md"
 import {useForm} from "@mantine/form";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
 import signUpActions from "../../../Services/Actions/SignUp/signUp.actions";
 
-function PasswordRequirement({meets, label}: { meets: boolean; label: string }) {
-    return (
-        <Text color={meets ? 'teal' : 'red'} sx={{display: 'flex', alignItems: 'center'}} mt={7} size="sm">
-            {meets ? <MdCheck size={14}/> : <MdOutlineClear size={14}/>} <Box ml={10}>{label}</Box>
-        </Text>
-    );
-}
-
-const requirements = [
-    {re: /[0-9]/, label: 'Includes number'},
-    {re: /[a-z]/, label: 'Includes lowercase letter'},
-    {re: /[A-Z]/, label: 'Includes uppercase letter'},
-    {re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol'},
-];
-
-function getStrength(password: string) {
-    let multiplier = password.length > 9 ? 0 : 1;
-    requirements.forEach((requirement) => {
-        if (!requirement.re.test(password)) {
-            multiplier += 1;
-        }
-    });
-    return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
-}
-
 export default function SignUp() {
+    const navigate = useNavigate();
+    function PasswordRequirement({meets, label}: { meets: boolean; label: string }) {
+        return (
+            <Text color={meets ? 'teal' : 'red'} sx={{display: 'flex', alignItems: 'center'}} mt={7} size="sm">
+                {meets ? <MdCheck size={14}/> : <MdOutlineClear size={14}/>} <Box ml={10}>{label}</Box>
+            </Text>
+        );
+    }
+
+    function getStrength(password: string) {
+        let multiplier = password.length > 9 ? 0 : 1;
+        requirements.forEach((requirement) => {
+            if (!requirement.re.test(password)) {
+                multiplier += 1;
+            }
+        });
+        return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
+    }
+
+    const requirements = [
+        {re: /[0-9]/, label: 'Includes number'},
+        {re: /[a-z]/, label: 'Includes lowercase letter'},
+        {re: /[A-Z]/, label: 'Includes uppercase letter'},
+        {re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol'},
+    ];
+    const [popoverOpened, setPopoverOpened] = useState(false);
+    const [value, setValue] = useInputState('');
+    const checks = requirements.map((requirement, index) => (
+        <PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(value)}/>
+    ));
+    const strength = getStrength(value);
+    const color = strength === 100 ? 'teal' : strength > 50 ? 'yellow' : 'red';
     const form = useForm({
         initialValues: {
             username: '',
@@ -62,16 +69,17 @@ export default function SignUp() {
             username: (value) => (value.length > 0 ? null : 'Username is required'),
             firstName: (value) => (value.length > 0 ? null : 'First name is required'),
             lastName: (value) => (value.length > 0 ? null : 'Last name is required'),
-            password: () => (value.length > 0 ? null : 'Password is required'),
+            password: () => (value.length > 0 ? null : 'Password is required') || (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[$&+,:;=?@#|'<>.^*()%!-,]).{8,}$/.test(value) ? null : 'Invalid password'),
         }
     });
-    const [popoverOpened, setPopoverOpened] = useState(false);
-    const [value, setValue] = useInputState('');
-    const checks = requirements.map((requirement, index) => (
-        <PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(value)}/>
-    ));
-    const strength = getStrength(value);
-    const color = strength === 100 ? 'teal' : strength > 50 ? 'yellow' : 'red';
+
+    function handleSubmit(values: any) {
+        signUpActions(values).then(success => {
+            if (success) {
+                navigate("/home", {replace: true});
+            }
+        })
+    }
 
     return (
         <Box
@@ -90,7 +98,7 @@ export default function SignUp() {
 
             </MediaQuery>
             <Divider my="md"/>
-            <form onSubmit={form.onSubmit((values) => signUpActions(values))}>
+            <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                 <SimpleGrid cols={2} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                     <TextInput
                         withAsterisk

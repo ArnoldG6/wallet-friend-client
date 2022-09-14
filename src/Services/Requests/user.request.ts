@@ -11,11 +11,11 @@ class UserServices {
     }
 
     create(data: UserSignUp) {
-        http.post<any>("/users/register", data)
+       return http.post<any>("/users/register", data)
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully sign in!");
-
+                return true;
             })
             .catch(function (error) {
                 if (error.response) {
