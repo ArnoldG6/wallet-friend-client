@@ -6,14 +6,14 @@ import {Cookies} from "react-cookie";
 
 class AuthRequest {
     login(data: Auth) {
-        http.post<any>("/users/authenticate", data)
+        return http.post<any>("/users/authenticate", data)
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully logged in!");
                 const cookies = new Cookies();
                 cookies.set("access_token", response.data.access_token, {path: "/", sameSite: "lax"});
                 cookies.set("user_email", response.data.user.email, {path: "/", sameSite: "lax"});
-                window.location.href = "/home";
+                return true;
             })
             .catch(function (error) {
                 if (error.response) {

@@ -1,11 +1,14 @@
 import {Box, Button, Divider, Group, MediaQuery, PasswordInput, TextInput, Space, Anchor} from '@mantine/core';
 import {MdPermIdentity, MdAlternateEmail, MdOutlineLock} from "react-icons/md"
 import {useForm} from "@mantine/form";
-import {Link, useRouteMatch} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import loginAction from "../../../Services/Actions/Login/login.action";
 
 export default function Login() {
-    let { path } = useRouteMatch();
+    const navigate = useNavigate();
+    let location = useLocation();
+
+
     const form = useForm({
         initialValues: {
             email: '',
@@ -16,6 +19,15 @@ export default function Login() {
             password: (value) => (value.length > 0 ? null : 'Password is required'),
         }
     })
+
+    function handleSubmit(values: any) {
+        loginAction(values).then((success) => {
+            if (success) {
+                let from = location.state?.from?.pathname || "/home";
+                navigate(from, {replace: true});
+            }
+        });
+    }
 
     return (
         <Box
@@ -36,7 +48,7 @@ export default function Login() {
 
             <Divider my="md"/>
 
-            <form onSubmit={form.onSubmit((values) => loginAction(values))}>
+            <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                 <TextInput
                     withAsterisk
                     label="Email"
@@ -65,8 +77,8 @@ export default function Login() {
             <Divider my="md"/>
 
             <Group position="center">
-                <Anchor component={Link} to={`${path}/reset-password`}>Forgot password?</Anchor>
-                <Anchor component={Link} to={`${path}/signup`}>Don't have an account?</Anchor>
+                <Anchor component={Link} to={`/auth/forgot-password`}>Forgot password?</Anchor>
+                <Anchor component={Link} to={`/auth/register`}>Don't have an account?</Anchor>
             </Group>
         </Box>
     );

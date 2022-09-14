@@ -4,5 +4,5 @@ import {sha256} from "js-sha256";
 
 export default function loginAction(values: any) {
     const data: Auth = {username: values.email, password: sha256(values.password)};
-    AuthRequest.login(data);
+    return AuthRequest.login(data);
 }
