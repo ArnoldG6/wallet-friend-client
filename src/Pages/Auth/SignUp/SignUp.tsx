@@ -1,7 +1,21 @@
-import {Box, Button, Divider, Group, MediaQuery, PasswordInput, TextInput, Space, Anchor, Text, Progress, Popover, SimpleGrid} from '@mantine/core';
+import {
+    Box,
+    Button,
+    Divider,
+    Group,
+    MediaQuery,
+    PasswordInput,
+    TextInput,
+    Space,
+    Anchor,
+    Text,
+    Progress,
+    Popover,
+    SimpleGrid
+} from '@mantine/core';
 import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox, MdCheck, MdOutlineClear} from "react-icons/md"
 import {useForm} from "@mantine/form";
-import {Link, useRouteMatch} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
 import signUpActions from "../../../Services/Actions/SignUp/signUp.actions";
@@ -13,6 +27,7 @@ function PasswordRequirement({meets, label}: { meets: boolean; label: string }) 
         </Text>
     );
 }
+
 const requirements = [
     {re: /[0-9]/, label: 'Includes number'},
     {re: /[a-z]/, label: 'Includes lowercase letter'},
@@ -31,7 +46,6 @@ function getStrength(password: string) {
 }
 
 export default function SignUp() {
-    let {path} = useRouteMatch();
     const form = useForm({
         initialValues: {
             username: '',
@@ -44,11 +58,11 @@ export default function SignUp() {
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
             confirmPassword: (valueCP) =>
-                ( valueCP !== value ? 'Passwords did not match' : null ||  valueCP.length > 0 ? null : 'Confirm Password is required'),
+                (valueCP !== value ? 'Passwords did not match' : null || valueCP.length > 0 ? null : 'Confirm Password is required'),
             username: (value) => (value.length > 0 ? null : 'Username is required'),
             firstName: (value) => (value.length > 0 ? null : 'First name is required'),
             lastName: (value) => (value.length > 0 ? null : 'Last name is required'),
-            password: () => (value.length>0?null:'Password is required'),
+            password: () => (value.length > 0 ? null : 'Password is required'),
         }
     });
     const [popoverOpened, setPopoverOpened] = useState(false);
@@ -168,7 +182,7 @@ export default function SignUp() {
             <Divider my="md"/>
 
             <Group position="center">
-                <Anchor component={Link} to={`${path}/auth`}>Already have an account? Login</Anchor>
+                <Anchor component={Link} to="/auth/login">Already have an account? Login</Anchor>
             </Group>
         </Box>
     );

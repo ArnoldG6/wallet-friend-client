@@ -3,7 +3,6 @@ import UserFull from "../../Types/User/user-SignUp.types";
 import UserSignUp from "../../Types/User/user-SignUp.types";
 import User from "../../Types/User/user.types";
 import successNotification from "../Utils/Notifications/success.util";
-import {Cookies} from "react-cookie";
 import errorNotification from "../Utils/Notifications/error.util";
 
 class UserServices {
