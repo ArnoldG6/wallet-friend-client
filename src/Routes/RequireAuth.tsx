@@ -1,5 +1,6 @@
 import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
+import AuthRequest from "../Services/Requests/auth.request";
 
 export default function RequireAuth({children}: { children: any }) {
     let location = useLocation();
@@ -8,7 +9,7 @@ export default function RequireAuth({children}: { children: any }) {
         const access_token = localStorage.getItem('access_token');
         const username = localStorage.getItem('username');
         if (access_token && username) {
-            //TODO: validate token with backend here
+            console.log(AuthRequest.validateToken(username));
             return children;
         } else {
             // Clean localStorage to be safe

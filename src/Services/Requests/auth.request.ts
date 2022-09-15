@@ -4,13 +4,15 @@ import errorNotification from "../Utils/Notifications/error.util";
 import successNotification from "../Utils/Notifications/success.util";
 
 class AuthRequest {
-    login(data: Auth) {
-        return http.post<any>("/users/authenticate", data)
+    async login(data: Auth) {
+        return await http.post<any>("/users/authenticate", data)
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully logged in!");
-                localStorage.setItem("access_token", response.data.token);
+                console.log(response.data);
+                localStorage.setItem("access_token", response.data.access_token);
                 localStorage.setItem("username", response.data.user.username);
+                console.log(localStorage.getItem("access_token"));
                 return true;
             })
             .catch(function (error) {
@@ -27,6 +29,16 @@ class AuthRequest {
                     // Something happened in setting up the request that triggered an Error
                     errorNotification("Uh oh!", "There was an unexpected error.");
                 }
+            });
+    }
+
+    async validateToken(username: string) {
+        return await http.get<any>(`/users/check-authorization/${username}`)
+            .then((response) => {
+                return true;
+            })
+            .catch((error) => {
+                return false;
             });
     }
 
