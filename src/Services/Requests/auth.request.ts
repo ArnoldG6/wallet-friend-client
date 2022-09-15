@@ -2,7 +2,6 @@ import http from "../../Middleware/http-common";
 import Auth from "../../Types/Auth/auth.type";
 import errorNotification from "../Utils/Notifications/error.util";
 import successNotification from "../Utils/Notifications/success.util";
-import {Cookies} from "react-cookie";
 
 class AuthRequest {
     login(data: Auth) {
@@ -10,9 +9,8 @@ class AuthRequest {
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully logged in!");
-                const cookies = new Cookies();
-                cookies.set("access_token", response.data.access_token, {path: "/", sameSite: "lax"});
-                cookies.set("user_email", response.data.user.email, {path: "/", sameSite: "lax"});
+                localStorage.setItem("access_token", response.data.token);
+                localStorage.setItem("username", response.data.user.username);
                 return true;
             })
             .catch(function (error) {

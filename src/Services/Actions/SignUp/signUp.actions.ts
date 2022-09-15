@@ -10,7 +10,6 @@ export default function signUpActions(values: any) {
     return UserRequest.create(dataSignUp).then(success => {
         if (success) {
             const data = {email: values.email, username: values.email, password: values.confirmPassword};
-            console.log(data);
             return LoginAction(data)
         }
     });

@@ -1,21 +1,19 @@
-import {useCookies} from "react-cookie";
 import WalletFriend from "./Pages/WalletFriend";
 import {useState} from "react";
 import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
 import {NotificationsProvider} from "@mantine/notifications";
 
 export default function App() {
-    const [cookies, setCookie] = useCookies(['theme']);
-    const [colorScheme, setColorScheme] = useState<ColorScheme>(cookies.theme);
+    const [colorScheme, setColorScheme] = useState<ColorScheme>(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
 
     const toggleColorScheme = (value?: ColorScheme) =>
         setColorScheme(value || (colorScheme === 'dark' ?
                 (() => {
-                    setCookie('theme', 'light', {path: '/', sameSite: 'lax'});
+                    localStorage.setItem('theme', 'light');
                     return 'light';
                 })
                 : (() => {
-                    setCookie('theme', 'dark', {path: '/', sameSite: 'lax'});
+                    localStorage.setItem('theme', 'dark');
                     return 'dark';
                 })
         ));

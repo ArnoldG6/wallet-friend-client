@@ -14,7 +14,7 @@ class UserServices {
        return http.post<any>("/users/register", data)
             .then(function (response) {
                 // handle success
-                successNotification("Success", "You have successfully sign in!");
+                successNotification("Success", "You have successfully registered your account!");
                 return true;
             })
             .catch(function (error) {

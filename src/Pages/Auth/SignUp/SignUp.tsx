@@ -95,7 +95,6 @@ export default function SignUp() {
             </MediaQuery>
             <MediaQuery largerThan="md" styles={{display: "none"}}>
                 <MdHowToReg size={50}/>
-
             </MediaQuery>
             <Divider my="md"/>
             <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
