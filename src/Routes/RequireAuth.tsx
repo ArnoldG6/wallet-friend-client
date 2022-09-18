@@ -9,6 +9,7 @@ export default function RequireAuth({children}: { children: any }) {
         const access_token = localStorage.getItem('access_token');
         const username = localStorage.getItem('username');
         if (access_token && username) {
+            console.log('access_token', access_token);
             console.log(AuthRequest.validateToken(username));
             return children;
         } else {

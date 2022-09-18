@@ -1,4 +1,4 @@
-import http from "../../Middleware/http-common";
+import getAxiosInstance from "../../Middleware/http-common";
 import UserFull from "../../Types/User/user-SignUp.types";
 import UserSignUp from "../../Types/User/user-SignUp.types";
 import User from "../../Types/User/user.types";
@@ -7,11 +7,11 @@ import errorNotification from "../Utils/Notifications/error.util";
 
 class UserServices {
     get(username: string) {
-        return http.get<User>(`/users/${username}`);
+        return getAxiosInstance().get<User>(`/users/${username}`);
     }
 
     create(data: UserSignUp) {
-       return http.post<any>("/users/register", data)
+       return getAxiosInstance().post<any>("/users/register", data)
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully registered your account!");
@@ -36,11 +36,11 @@ class UserServices {
     }
 
     update(username: string, data: UserFull) {
-        return http.put<any>(`/users/${username}`, data);
+        return getAxiosInstance().put<any>(`/users/${username}`, data);
     }
 
     delete(username: string) {
-        return http.delete<any>(`/users/${username}`);
+        return getAxiosInstance().delete<any>(`/users/${username}`);
     }
 }
 

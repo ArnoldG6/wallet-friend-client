@@ -1,15 +1,14 @@
-import http from "../../Middleware/http-common";
+import getAxiosInstance from "../../Middleware/http-common";
 import Auth from "../../Types/Auth/auth.type";
 import errorNotification from "../Utils/Notifications/error.util";
 import successNotification from "../Utils/Notifications/success.util";
 
 class AuthRequest {
     async login(data: Auth) {
-        return await http.post<any>("/users/authenticate", data)
+        return await getAxiosInstance().post<any>("/users/authenticate", data)
             .then(function (response) {
                 // handle success
                 successNotification("Success", "You have successfully logged in!");
-                console.log(response.data);
                 localStorage.setItem("access_token", response.data.access_token);
                 localStorage.setItem("username", response.data.user.username);
                 console.log(localStorage.getItem("access_token"));
@@ -33,7 +32,7 @@ class AuthRequest {
     }
 
     async validateToken(username: string) {
-        return await http.get<any>(`/users/check-authorization/${username}`)
+        return await getAxiosInstance().get<any>(`/users/check-authorization/${username}`)
             .then((response) => {
                 return true;
             })
@@ -43,7 +42,7 @@ class AuthRequest {
     }
 
     passwordReset(data: Auth) {
-        return http.post<any>("/auth/password-reset", data);
+        return getAxiosInstance().post<any>("/auth/password-reset", data);
     }
 }
 
