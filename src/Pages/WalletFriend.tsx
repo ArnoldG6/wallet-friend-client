@@ -12,11 +12,13 @@ export default function WalletFriend() {
         createRoutesFromElements(
             <Route path="/" element={<WFShell/>} errorElement={<NotFound/>}>
                 <Route path="auth" element={<BaseAuth/>} errorElement={<NotFound/>}>
+                    <Route path="" element={<Login/>} errorElement={<NotFound/>} />
                     <Route path="login" element={<Login/>} errorElement={<NotFound/>}/>
                     <Route path="register" element={<SignUp/>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
+                    <Route path="" element={<RequireAuth> <div>main home</div> </RequireAuth>} errorElement={<NotFound/>}/>
                     <Route path="meme" element={<RequireAuth> <div>memes</div> </RequireAuth>} errorElement={<NotFound/>}/>
                 </Route>
             </Route>
