@@ -65,7 +65,7 @@ export default function SignUp() {
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
             confirmPassword: (valueCP) =>
-                (valueCP !== value ? 'Passwords did not match' : null || valueCP.length > 0 ? null : 'Confirm Password is required'),
+                (valueCP !== value ? 'Passwords did not match' : null)||( valueCP.length > 0 ? null : 'Confirm Password is required'),
             username: (value) => (value.length > 0 ? null : 'Username is required'),
             firstName: (value) => (value.length > 0 ? null : 'First name is required'),
             lastName: (value) => (value.length > 0 ? null : 'Last name is required'),

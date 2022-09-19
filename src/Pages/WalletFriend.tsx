@@ -6,6 +6,8 @@ import Login from "./Auth/Login/Login";
 import SignUp from "./Auth/SignUp/SignUp";
 import RequireAuth from "../Routes/RequireAuth";
 import NotFound from "../Components/NotFound/NotFound";
+import {ForgotPassword} from "./Auth/ForgotPassword/ForgotPassword";
+
 
 export default function WalletFriend() {
     let router = createBrowserRouter(
@@ -16,6 +18,7 @@ export default function WalletFriend() {
                     <Route path="login" element={<Login/>} errorElement={<NotFound/>}/>
                     <Route path="register" element={<SignUp/>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
+                    <Route path="forgot-password" element={<ForgotPassword/>} errorElement={<NotFound/>}/>
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
                     <Route path="" element={<RequireAuth> <div>main home</div> </RequireAuth>} errorElement={<NotFound/>}/>
