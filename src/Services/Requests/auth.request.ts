@@ -11,7 +11,6 @@ class AuthRequest {
                 successNotification("Success", "You have successfully logged in!");
                 localStorage.setItem("access_token", response.data.access_token);
                 localStorage.setItem("username", response.data.user.username);
-                console.log(localStorage.getItem("access_token"));
                 return true;
             })
             .catch(function (error) {
@@ -33,12 +32,6 @@ class AuthRequest {
 
     async validateToken(username: string) {
         return await getAxiosInstance().get<any>(`/users/check-authorization/${username}`)
-            .then((response) => {
-                return true;
-            })
-            .catch((error) => {
-                return false;
-            });
     }
 
     passwordReset(data: Auth) {

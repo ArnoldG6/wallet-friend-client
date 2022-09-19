@@ -1,24 +1,33 @@
-import {Navigate, useLocation} from "react-router-dom";
-import React from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import AuthRequest from "../Services/Requests/auth.request";
+import {useEffect} from "react";
 
 export default function RequireAuth({children}: { children: any }) {
     let location = useLocation();
+    const navigate = useNavigate();
 
     const isAuthenticated = () => {
         const access_token = localStorage.getItem('access_token');
         const username = localStorage.getItem('username');
         if (access_token && username) {
-            console.log('access_token', access_token);
-            console.log(AuthRequest.validateToken(username));
-            return children;
+            AuthRequest.validateToken(username)
+                .catch(() => {
+                    // Clean localStorage to be safe
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('username');
+                    navigate('/auth/login', {replace: true, state: {from: location}});
+                });
         } else {
             // Clean localStorage to be safe
             localStorage.removeItem('access_token');
             localStorage.removeItem('username');
-            return <Navigate to="/auth/login" state={{from: location}} replace/>;
+            navigate('/auth/login', {replace: true, state: {from: location}});
         }
     }
 
-    return isAuthenticated();
+    useEffect(() => {
+        isAuthenticated();
+    });
+
+    return children;
 }
