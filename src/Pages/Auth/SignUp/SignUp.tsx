@@ -11,7 +11,7 @@ import {
     Text,
     Progress,
     Popover,
-    SimpleGrid
+    SimpleGrid, LoadingOverlay
 } from '@mantine/core';
 import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox, MdCheck, MdOutlineClear} from "react-icons/md"
 import {useForm} from "@mantine/form";
@@ -22,6 +22,8 @@ import signUpActions from "../../../Services/Actions/SignUp/signUp.actions";
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const [visible, setVisible] = useState(false);
+
     function PasswordRequirement({meets, label}: { meets: boolean; label: string }) {
         return (
             <Text color={meets ? 'teal' : 'red'} sx={{display: 'flex', alignItems: 'center'}} mt={7} size="sm">
@@ -65,7 +67,7 @@ export default function SignUp() {
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
             confirmPassword: (valueCP) =>
-                (valueCP !== value ? 'Passwords did not match' : null)||( valueCP.length > 0 ? null : 'Confirm Password is required'),
+                (valueCP !== value ? 'Passwords did not match' : null) || (valueCP.length > 0 ? null : 'Confirm Password is required'),
             username: (value) => (value.length > 0 ? null : 'Username is required'),
             firstName: (value) => (value.length > 0 ? null : 'First name is required'),
             lastName: (value) => (value.length > 0 ? null : 'Last name is required'),
@@ -74,11 +76,17 @@ export default function SignUp() {
     });
 
     function handleSubmit(values: any) {
-        signUpActions(values).then(success => {
-            if (success) {
-                navigate("/home", {replace: true});
-            }
-        })
+        setVisible(true);
+        signUpActions(values)
+            .then(success => {
+                if (success) {
+                    setVisible(false);
+                    navigate("/home", {replace: true});
+                }
+            })
+            .catch(() => {
+                setVisible(false);
+            })
     }
 
     return (
@@ -88,6 +96,7 @@ export default function SignUp() {
                 textAlign: 'center',
                 padding: theme.spacing.xl,
                 borderRadius: theme.radius.md,
+                position: 'relative',
             })}
         >
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
@@ -98,6 +107,7 @@ export default function SignUp() {
             </MediaQuery>
             <Divider my="md"/>
             <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+                <LoadingOverlay visible={visible} overlayBlur={1} radius={"md"}/>
                 <SimpleGrid cols={2} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                     <TextInput
                         withAsterisk

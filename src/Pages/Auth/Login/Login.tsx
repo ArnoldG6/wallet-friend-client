@@ -1,12 +1,25 @@
-import {Box, Button, Divider, Group, MediaQuery, PasswordInput, TextInput, Space, Anchor} from '@mantine/core';
+import {
+    Box,
+    Button,
+    Divider,
+    Group,
+    MediaQuery,
+    PasswordInput,
+    TextInput,
+    Space,
+    Anchor,
+    LoadingOverlay
+} from '@mantine/core';
 import {MdPermIdentity, MdAlternateEmail, MdOutlineLock} from "react-icons/md"
 import {useForm} from "@mantine/form";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import loginAction from "../../../Services/Actions/Login/login.action";
+import {useState} from "react";
 
 export default function Login() {
     const navigate = useNavigate();
     let location = useLocation();
+    const [visible, setVisible] = useState(false);
 
 
     const form = useForm({
@@ -21,12 +34,18 @@ export default function Login() {
     })
 
     function handleSubmit(values: any) {
-        loginAction(values).then((success) => {
-            if (success) {
-                let from = location.state?.from?.pathname || "/home";
-                navigate(from, {replace: true});
-            }
-        });
+        setVisible(true);
+        loginAction(values)
+            .then((success) => {
+                if (success) {
+                    setVisible(false);
+                    let from = location.state?.from?.pathname || "/home";
+                    navigate(from, {replace: true});
+                }
+            })
+            .catch(() => {
+                setVisible(false);
+            });
     }
 
     return (
@@ -36,8 +55,10 @@ export default function Login() {
                 textAlign: 'center',
                 padding: theme.spacing.xl,
                 borderRadius: theme.radius.md,
+                position: 'relative',
             })}
         >
+
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
                 <MdPermIdentity size={100}/>
             </MediaQuery>
@@ -49,6 +70,7 @@ export default function Login() {
             <Divider my="md"/>
 
             <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+                <LoadingOverlay visible={visible} overlayBlur={1} radius={"md"}/>
                 <TextInput
                     withAsterisk
                     label="Email"
@@ -58,7 +80,7 @@ export default function Login() {
                     icon={<MdAlternateEmail/>}
                     {...form.getInputProps('email')}
                 />
-                <Space h="md" />
+                <Space h="md"/>
                 <PasswordInput
                     withAsterisk
                     label="Password"
@@ -68,7 +90,7 @@ export default function Login() {
                     icon={<MdOutlineLock/>}
                     {...form.getInputProps('password')}
                 />
-                <Space h="md" />
+                <Space h="md"/>
                 <Group position="center">
                     <Button type="submit">Submit</Button>
                 </Group>
