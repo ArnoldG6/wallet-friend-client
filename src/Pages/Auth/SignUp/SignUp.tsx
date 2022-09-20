@@ -3,51 +3,49 @@ import {
     Button,
     Divider,
     Group,
-    MediaQuery,
     PasswordInput,
     TextInput,
     Space,
     Anchor,
-    Text,
     Progress,
     Popover,
-    SimpleGrid, LoadingOverlay
+    SimpleGrid, LoadingOverlay, Center, createStyles, Container, Title
 } from '@mantine/core';
-import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox, MdCheck, MdOutlineClear} from "react-icons/md"
+import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox} from "react-icons/md"
 import {useForm} from "@mantine/form";
 import {Link, useNavigate} from "react-router-dom";
 import {useInputState} from "@mantine/hooks";
 import {useState} from "react";
 import signUpActions from "../../../Services/Actions/SignUp/signUp.actions";
+import {IconArrowLeft} from "@tabler/icons";
+import PasswordRequirement from "../../../Services/Utils/Password/PasswordRequirement.utils";
+import getStrength from "../../../Services/Utils/Password/Strength.utils";
+import {requirements} from "../../../Services/Utils/Password/Requirements";
 
 export default function SignUp() {
+    const useStyles = createStyles((theme) => ({
+        title: {
+            fontSize: 26,
+            fontWeight: 900,
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+        },
+        controls: {
+            [theme.fn.smallerThan('xs')]: {
+                flexDirection: 'column-reverse',
+            },
+        },
+        control: {
+            [theme.fn.smallerThan('xs')]: {
+                width: '100%',
+                textAlign: 'center',
+            },
+        },
+    }));
+
+    const {classes} = useStyles();
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
 
-    function PasswordRequirement({meets, label}: { meets: boolean; label: string }) {
-        return (
-            <Text color={meets ? 'teal' : 'red'} sx={{display: 'flex', alignItems: 'center'}} mt={7} size="sm">
-                {meets ? <MdCheck size={14}/> : <MdOutlineClear size={14}/>} <Box ml={10}>{label}</Box>
-            </Text>
-        );
-    }
-
-    function getStrength(password: string) {
-        let multiplier = password.length > 9 ? 0 : 1;
-        requirements.forEach((requirement) => {
-            if (!requirement.re.test(password)) {
-                multiplier += 1;
-            }
-        });
-        return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
-    }
-
-    const requirements = [
-        {re: /[0-9]/, label: 'Includes number'},
-        {re: /[a-z]/, label: 'Includes lowercase letter'},
-        {re: /[A-Z]/, label: 'Includes uppercase letter'},
-        {re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol'},
-    ];
     const [popoverOpened, setPopoverOpened] = useState(false);
     const [value, setValue] = useInputState('');
     const checks = requirements.map((requirement, index) => (
@@ -99,12 +97,15 @@ export default function SignUp() {
                 position: 'relative',
             })}
         >
-            <MediaQuery smallerThan="md" styles={{display: "none"}}>
-                <MdHowToReg size={100}/>
-            </MediaQuery>
-            <MediaQuery largerThan="md" styles={{display: "none"}}>
-                <MdHowToReg size={50}/>
-            </MediaQuery>
+            <Container size={400} my={20}>
+                <Group position={"center"} spacing={"xs"}>
+                    <Title className={classes.title}>
+                        Sign Up
+                    </Title>
+                    <MdHowToReg size={50}/>
+                </Group>
+            </Container>
+
             <Divider my="md"/>
             <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                 <LoadingOverlay visible={visible} overlayBlur={1} radius={"md"}/>
@@ -170,6 +171,7 @@ export default function SignUp() {
                                     value={value}
                                     onChange={(event) => setValue(event.currentTarget.value)}
                                     error={form.errors.password}
+
                                 />
                             </div>
 
@@ -197,10 +199,15 @@ export default function SignUp() {
             </form>
 
             <Divider my="md"/>
-
-            <Group position="center">
-                <Anchor component={Link} to="/auth/login">Already have an account? Login</Anchor>
+            <Group position="apart" mt="lg" className={classes.controls}>
+                <Anchor color="dimmed" size="sm" component={Link} to="/auth/login" className={classes.control}>
+                    <Center inline>
+                        <IconArrowLeft size={12} stroke={1.5}/>
+                        <Box ml={5}>Already have an account? Login</Box>
+                    </Center>
+                </Anchor>
             </Group>
+
         </Box>
     );
 }

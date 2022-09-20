@@ -1,34 +1,27 @@
-import {createStyles, Title, Button, Container, Group, Space, Box, Text, Popover, PasswordInput, Progress} from '@mantine/core';
-import {MdCheck, MdOutlineClear, MdOutlineLock} from "react-icons/md";
+import {
+    createStyles,
+    Title,
+    Button,
+    Container,
+    Group,
+    Space,
+    Box,
+    Text,
+    Popover,
+    PasswordInput,
+    Progress
+} from '@mantine/core';
+import {MdOutlineLock} from "react-icons/md";
 import {useForm} from "@mantine/form";
 import {useState} from "react";
 import {useInputState} from "@mantine/hooks";
+import PasswordRequirement from "../../../Services/Utils/Password/PasswordRequirement.utils";
+import getStrength from "../../../Services/Utils/Password/Strength.utils";
+import {requirements} from "../../../Services/Utils/Password/Requirements";
 
 export function ResetPassword() {
-    function PasswordRequirement({meets, label}: { meets: boolean; label: string }) {
-        return (
-            <Text color={meets ? 'teal' : 'red'} sx={{display: 'flex', alignItems: 'center'}} mt={7} size="sm">
-                {meets ? <MdCheck size={14}/> : <MdOutlineClear size={14}/>} <Box ml={10}>{label}</Box>
-            </Text>
-        );
-    }
 
-    function getStrength(password: string) {
-        let multiplier = password.length > 9 ? 0 : 1;
-        requirements.forEach((requirement) => {
-            if (!requirement.re.test(password)) {
-                multiplier += 1;
-            }
-        });
-        return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
-    }
 
-    const requirements = [
-        {re: /[0-9]/, label: 'Includes number'},
-        {re: /[a-z]/, label: 'Includes lowercase letter'},
-        {re: /[A-Z]/, label: 'Includes uppercase letter'},
-        {re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol'},
-    ];
     const [popoverOpened, setPopoverOpened] = useState(false);
     const [value, setValue] = useInputState('');
     const checks = requirements.map((requirement, index) => (

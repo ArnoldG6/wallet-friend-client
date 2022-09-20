@@ -1,10 +1,25 @@
-import {createStyles, Title, Text, TextInput, Button, Container, Group, Anchor, Center, Box, Divider, Space} from '@mantine/core';
+import {
+    createStyles,
+    Title,
+    Text,
+    TextInput,
+    Button,
+    Container,
+    Group,
+    Anchor,
+    Center,
+    Box,
+    Divider,
+    Space
+} from '@mantine/core';
 import {IconArrowLeft} from '@tabler/icons';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {MdAlternateEmail} from "react-icons/md";
 import {useForm} from "@mantine/form";
+import resetPasswordAction from "../../../Services/Actions/PasswordReset/passwordReset.action";
 
 export function ForgotPassword() {
+    const navigate = useNavigate();
     const useStyles = createStyles((theme) => ({
         title: {
             fontSize: 26,
@@ -33,6 +48,15 @@ export function ForgotPassword() {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
         }
     });
+
+    function handleSubmit(values: any) {
+        resetPasswordAction(values).then(success => {
+            if (success) {
+                navigate("/login", {replace: true});
+            }
+        })
+    }
+
     return (
 
         <Box
@@ -52,7 +76,7 @@ export function ForgotPassword() {
                 </Text>
             </Container>
 
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                 <TextInput
                     withAsterisk
                     label="Email"

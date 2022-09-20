@@ -3,12 +3,11 @@ import {
     Button,
     Divider,
     Group,
-    MediaQuery,
     PasswordInput,
     TextInput,
     Space,
     Anchor,
-    LoadingOverlay
+    LoadingOverlay, Title, Container
 } from '@mantine/core';
 import {MdPermIdentity, MdAlternateEmail, MdOutlineLock} from "react-icons/md"
 import {useForm} from "@mantine/form";
@@ -58,14 +57,18 @@ export default function Login() {
                 position: 'relative',
             })}
         >
-
-            <MediaQuery smallerThan="md" styles={{display: "none"}}>
-                <MdPermIdentity size={100}/>
-            </MediaQuery>
-            <MediaQuery largerThan="md" styles={{display: "none"}}>
-                <MdPermIdentity size={50}/>
-
-            </MediaQuery>
+            <Container size={400} my={20}>
+                <Group position={"center"} spacing={"xs"}>
+                    <Title
+                        sx={(theme) => ({fontSize: 26,
+                                fontWeight: 900,
+                                fontFamily: `Greycliff CF, ${theme.fontFamily}`,})}
+                    >
+                        Login
+                    </Title>
+                    <MdPermIdentity size={50}/>
+                </Group>
+            </Container>
 
             <Divider my="md"/>
 
