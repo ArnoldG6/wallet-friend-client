@@ -102,8 +102,8 @@ export default function Login() {
             <Divider my="md"/>
 
             <Group position="center">
-                <Anchor component={Link} to={`/auth/forgot-password`}>Forgot password?</Anchor>
-                <Anchor component={Link} to={`/auth/register`}>Don't have an account?</Anchor>
+                <Anchor color="dimmed" size="sm"  component={Link} to={`/auth/forgot-password`}>Forgot password?</Anchor>
+                <Anchor color="dimmed" size="sm"  component={Link} to={`/auth/register`}>Don't have an account?</Anchor>
             </Group>
         </Box>
     );
