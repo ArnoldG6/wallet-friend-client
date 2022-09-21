@@ -7,6 +7,7 @@ import SignUp from "./Auth/SignUp/SignUp";
 import RequireAuth from "../Routes/RequireAuth";
 import NotFound from "../Components/NotFound/NotFound";
 import {ForgotPassword} from "./Auth/ForgotPassword/ForgotPassword";
+import Home from "./Home/Landing/Home";
 import {ResetPassword} from "./Auth/PasswordReset/PasswordReset";
 
 
@@ -23,7 +24,7 @@ export default function WalletFriend() {
                     <Route path="password-reset/:token" element={<ResetPassword />} />
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
-                    <Route path="" element={<RequireAuth> <div>main home</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="" element={<RequireAuth> <Home/> </RequireAuth>} errorElement={<NotFound/>}/>
                     <Route path="meme" element={<RequireAuth> <div>memes</div> </RequireAuth>} errorElement={<NotFound/>}/>
                 </Route>
             </Route>
