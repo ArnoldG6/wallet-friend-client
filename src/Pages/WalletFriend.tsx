@@ -19,13 +19,17 @@ export default function WalletFriend() {
                     <Route path="" element={<Login/>} errorElement={<NotFound/>} />
                     <Route path="login" element={<Login/>} errorElement={<NotFound/>}/>
                     <Route path="register" element={<SignUp/>} errorElement={<NotFound/>}/>
-                    <Route path="*" element={<NotFound/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} errorElement={<NotFound/>}/>
+
                     <Route path="reset_password/:token" element={<ResetPassword />} />
+                    <Route path="*" element={<NotFound/>}/>
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
                     <Route path="" element={<RequireAuth> <Home/> </RequireAuth>} errorElement={<NotFound/>}/>
-                    <Route path="meme" element={<RequireAuth> <div>memes</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="categories" element={<RequireAuth> <div>categories</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="earnings" element={<RequireAuth> <div>earnings</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="expenses" element={<RequireAuth> <div>expenses</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="*" element={<NotFound/>}/>
                 </Route>
             </Route>
         )
