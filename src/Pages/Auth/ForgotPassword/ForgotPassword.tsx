@@ -52,11 +52,10 @@ export function ForgotPassword() {
     function handleSubmit(values: any) {
         resetPasswordAction(values).then(success => {
             if (success) {
-                navigate("/login", {replace: true});
+                navigate("/", {replace: true});
             }
         })
     }
-
     return (
 
         <Box

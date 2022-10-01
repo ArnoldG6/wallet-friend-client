@@ -21,7 +21,7 @@ export default function WalletFriend() {
                     <Route path="register" element={<SignUp/>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} errorElement={<NotFound/>}/>
-                    <Route path="password-reset/:token" element={<ResetPassword />} />
+                    <Route path="reset_password/:token" element={<ResetPassword />} />
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
                     <Route path="" element={<RequireAuth> <Home/> </RequireAuth>} errorElement={<NotFound/>}/>

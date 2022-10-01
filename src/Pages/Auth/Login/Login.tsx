@@ -60,9 +60,11 @@ export default function Login() {
             <Container size={400} my={20}>
                 <Group position={"center"} spacing={"xs"}>
                     <Title
-                        sx={(theme) => ({fontSize: 26,
-                                fontWeight: 900,
-                                fontFamily: `Greycliff CF, ${theme.fontFamily}`,})}
+                        sx={(theme) => ({
+                            fontSize: 26,
+                            fontWeight: 900,
+                            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                        })}
                     >
                         Login
                     </Title>
@@ -102,8 +104,8 @@ export default function Login() {
             <Divider my="md"/>
 
             <Group position="center">
-                <Anchor color="dimmed" size="sm"  component={Link} to={`/auth/forgot-password`}>Forgot password?</Anchor>
-                <Anchor color="dimmed" size="sm"  component={Link} to={`/auth/register`}>Don't have an account?</Anchor>
+                <Anchor color="dimmed" size="sm" component={Link} to={`/auth/forgot-password`}>Forgot password?</Anchor>
+                <Anchor color="dimmed" size="sm" component={Link} to={`/auth/register`}>Don't have an account?</Anchor>
             </Group>
         </Box>
     );
