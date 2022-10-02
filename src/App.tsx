@@ -1,5 +1,5 @@
 import WalletFriend from "./Pages/WalletFriend";
-import {useState} from "react";
+import React, {useState} from "react";
 import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
 import {NotificationsProvider} from "@mantine/notifications";
 
