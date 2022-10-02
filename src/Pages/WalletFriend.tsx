@@ -9,6 +9,7 @@ import NotFound from "../Components/NotFound/NotFound";
 import {ForgotPassword} from "./Auth/ForgotPassword/ForgotPassword";
 import Home from "./Home/Landing/Home";
 import {ResetPassword} from "./Auth/PasswordReset/PasswordReset";
+import {Earnings} from "./Home/Earnings/Earnings";
 
 
 export default function WalletFriend() {
@@ -27,7 +28,7 @@ export default function WalletFriend() {
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
                     <Route path="" element={<RequireAuth> <Home/> </RequireAuth>} errorElement={<NotFound/>}/>
                     <Route path="categories" element={<RequireAuth> <div>categories</div> </RequireAuth>} errorElement={<NotFound/>}/>
-                    <Route path="earnings" element={<RequireAuth> <div>earnings</div> </RequireAuth>} errorElement={<NotFound/>}/>
+                    <Route path="earnings" element={<RequireAuth>  <Earnings/> </RequireAuth>} errorElement={<NotFound/>}/>
                     <Route path="expenses" element={<RequireAuth> <div>expenses</div> </RequireAuth>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
