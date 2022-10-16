@@ -57,10 +57,10 @@ export function Earnings() {
 
         <>
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
-                <Container my="md">
+                <Container fluid >
                     <Grid gutter={theme.spacing.md} grow>
                         <Grid.Col span={6}>
-                            <Container size={460} my={30}>
+                            <Container fluid>
                                 <Title size="h1" align="left">
                                     Net Worth:
                                 </Title>
@@ -72,7 +72,7 @@ export function Earnings() {
                         </Grid.Col>
                         <Grid.Col>
 
-                            <Container>
+                            <Container fluid>
                                 <Title color="dimmed" size="sm" align="left">
                                     My earnings:
                                 </Title>
