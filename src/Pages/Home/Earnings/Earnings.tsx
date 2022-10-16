@@ -1,7 +1,8 @@
 import {
+    Accordion,
     Container,
     createStyles, Divider,
-    Grid,
+    Grid, MediaQuery,
     ScrollArea,
     Skeleton, Table,
     Title,
@@ -32,6 +33,17 @@ const useStyles = createStyles((theme) => ({
     scrolled: {
         boxShadow: theme.shadows.sm,
     },
+    wrapper: {
+        paddingTop: theme.spacing.xl * 2,
+        paddingBottom: theme.spacing.xl * 2,
+        minHeight: 650,
+    },
+
+    title: {
+        marginBottom: theme.spacing.xl * 1.5,
+    },
+
+
 }));
 
 export function Earnings() {
@@ -39,44 +51,95 @@ export function Earnings() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
 
-
+    const placeholder =
+        'It can’t help '
     return (
-        <Container my="md">
-            <Grid gutter={theme.spacing.md} grow>
-                <Grid.Col span={6}>
-                    <Container size={460} my={30}>
-                        <Title size="h1" align="left">
-                            Net Worth:
-                        </Title>
-                    </Container>
 
-                </Grid.Col>
-                <Grid.Col span={6} >
-                   Grafico
-                </Grid.Col>
-                <Grid.Col>
-                    <Container >
-                        <Title color="dimmed" size="sm" align="left">
-                            My earnings:
-                        </Title>
-                    </Container>
-                    <Divider my="md"/>
-                    <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
-                        <Table sx={{minWidth: 700}}>
-                            <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
-                            <tr>
-                                <th>Categories</th>
-                                <th>Name</th>
-                                <th>Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </Table>
-                    </ScrollArea>
-                </Grid.Col>
+        <>
+            <MediaQuery smallerThan="md" styles={{display: "none"}}>
+                <Container my="md">
+                    <Grid gutter={theme.spacing.md} grow>
+                        <Grid.Col span={6}>
+                            <Container size={460} my={30}>
+                                <Title size="h1" align="left">
+                                    Net Worth:
+                                </Title>
+                            </Container>
 
-            </Grid>
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            Grafico
+                        </Grid.Col>
+                        <Grid.Col>
 
-        </Container>
+                            <Container>
+                                <Title color="dimmed" size="sm" align="left">
+                                    My earnings:
+                                </Title>
+                            </Container>
+                            <Divider my="md"/>
+                            <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                <Table sx={{minWidth: 700}}>
+                                    <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                    <tr>
+                                        <th>Categories</th>
+                                        <th>Name</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </Table>
+                            </ScrollArea>
+
+
+                        </Grid.Col>
+
+                    </Grid>
+
+                </Container>
+            </MediaQuery>
+            <MediaQuery largerThan="md" styles={{display: "none"}}>
+                <Container my="md">
+                    <Grid gutter={theme.spacing.md} grow>
+                        <Grid.Col span={6}>
+                            <Container size={460} my={30}>
+                                <Title size="h1" align="left">
+                                    Net Worth:
+                                </Title>
+                            </Container>
+
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            Grafico
+                        </Grid.Col>
+                        <Grid.Col>
+                            <Container size="sm" className={classes.wrapper}>
+                                <Title color="dimmed" size="sm" align="left">
+                                    My earnings:
+                                </Title>
+                                <Divider my="md"/>
+                                <Accordion variant="contained">
+                                    <Accordion.Item value="school">
+                                        <Accordion.Control>School</Accordion.Control>
+                                        <Accordion.Panel>{placeholder}</Accordion.Panel>
+                                    </Accordion.Item>
+
+                                    <Accordion.Item value="sc1hool">
+                                        <Accordion.Control>school</Accordion.Control>
+                                        <Accordion.Panel>{placeholder}</Accordion.Panel>
+                                    </Accordion.Item>
+
+
+                                </Accordion>
+                            </Container>
+
+
+                        </Grid.Col>
+
+                    </Grid>
+
+                </Container>
+            </MediaQuery>
+        </>
     );
 }
