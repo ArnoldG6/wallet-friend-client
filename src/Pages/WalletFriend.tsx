@@ -36,7 +36,6 @@ export default function WalletFriend() {
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
                 <Route path="home" element={<RequireAuth> <BaseHome/> </RequireAuth>} errorElement={<NotFound/>}>
-
                     <Route path="" element={<Home/>} errorElement={<NotFound/>}/>
                     <Route path="categories" element={<div>categories</div>} errorElement={<NotFound/>}/>
                     <Route path="earnings" element={<Earnings/>} errorElement={<NotFound/>}/>
