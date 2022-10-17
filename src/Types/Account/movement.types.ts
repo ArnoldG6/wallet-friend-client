@@ -1,7 +1,7 @@
 import BagMovement from "./bagMovement.types";
 
 export default interface Movement {
-    owner: string, // id of the account
+    owner: number, // id of the account
     creation_datetime: Date,
     name: string,
     description: string,
