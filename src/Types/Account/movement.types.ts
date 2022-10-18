@@ -7,5 +7,5 @@ export default interface Movement {
     description: string,
     amount: number,
     available_amount: number,
-    bagMovements: Array<BagMovement>,
+    bag_movements: Array<BagMovement>,
 }
