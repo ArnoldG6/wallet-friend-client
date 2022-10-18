@@ -76,13 +76,13 @@ export function Earnings() {
                         </Grid.Col>
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
-                                    <Group position="apart">
-                                        <Title color="dimmed" size="sm" align="left">
-                                            My earnings:
-                                        </Title>
+                                <Group position="apart">
+                                    <Title color="dimmed" size="sm" align="left">
+                                        My earnings:
+                                    </Title>
 
-                                        <Button >Add New Earning</Button>
-                                    </Group>
+                                    <Button>Add New Earning</Button>
+                                </Group>
 
                                 <Divider my="md"/>
                                 <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
@@ -132,9 +132,14 @@ export function Earnings() {
                         </Grid.Col>
                         <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
-                                <Title color="dimmed" size="sm" align="left">
-                                    My earnings:
-                                </Title>
+                                <Group position="apart">
+                                    <Title color="dimmed" size="sm" align="left">
+                                        My earnings:
+                                    </Title>
+
+                                    <Button>Add New Earning</Button>
+                                </Group>
+
                                 <Divider my="md"/>
                                 <Accordion variant="contained">
                                     <Accordion.Item value="school">
