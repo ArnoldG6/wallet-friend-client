@@ -12,6 +12,7 @@ import {ResetPassword} from "./Auth/PasswordReset/PasswordReset";
 import {Earnings} from "./Home/Earnings/Earnings";
 import React, {createContext, useState} from "react";
 import User from "../Types/User/user.types";
+import ToS from "./Auth/ToS/ToS";
 
 interface UserContextI {
     user: User | undefined,
@@ -31,7 +32,6 @@ export default function WalletFriend() {
                     <Route path="login" element={<Login/>} errorElement={<NotFound/>}/>
                     <Route path="register" element={<SignUp/>} errorElement={<NotFound/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} errorElement={<NotFound/>}/>
-
                     <Route path="reset_password/:token" element={<ResetPassword/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
@@ -42,6 +42,7 @@ export default function WalletFriend() {
                     <Route path="expenses" element={<div>expenses</div>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
+                <Route path="tos" element={<ToS/>} errorElement={<NotFound/>}/>
             </Route>
         )
     );

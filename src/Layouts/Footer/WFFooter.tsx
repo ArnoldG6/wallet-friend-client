@@ -1,4 +1,5 @@
-import {Footer, createStyles, Center, Container} from "@mantine/core";
+import {Footer, createStyles, Center, Container, Anchor, SimpleGrid} from "@mantine/core";
+import {Link} from "react-router-dom";
 
 export default function WFFooter() {
     const HEADER_HEIGHT = 70;
@@ -18,7 +19,10 @@ export default function WFFooter() {
     return (
         <Footer height={HEADER_HEIGHT}>
             <Container className={classes.inner} fluid>
-                <Center>©2022 Wallet Friend. All rights reserved. </Center>
+                <SimpleGrid cols={2} spacing="xl">
+                    <div>©2022 Wallet Friend. All rights reserved.</div>
+                    <Anchor component={Link} to="/tos">Terms of Service</Anchor>
+                </SimpleGrid>
             </Container>
         </Footer>
     );

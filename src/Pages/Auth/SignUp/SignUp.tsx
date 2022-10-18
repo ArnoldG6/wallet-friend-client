@@ -9,7 +9,7 @@ import {
     Anchor,
     Progress,
     Popover,
-    SimpleGrid, LoadingOverlay, Center, createStyles, Container, Title
+    SimpleGrid, LoadingOverlay, Center, createStyles, Container, Title, Checkbox
 } from '@mantine/core';
 import {MdHowToReg, MdAlternateEmail, MdOutlineLock, MdAccountBox} from "react-icons/md"
 import {useForm} from "@mantine/form";
@@ -61,6 +61,7 @@ export default function SignUp() {
             firstName: '',
             lastName: '',
             confirmPassword: '',
+            termsOfService: false
         },
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
@@ -70,6 +71,7 @@ export default function SignUp() {
             firstName: (value) => (value.length > 0 ? null : 'First name is required'),
             lastName: (value) => (value.length > 0 ? null : 'Last name is required'),
             password: () => (value.length > 0 ? null : 'Password is required') || (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[$&+,:;=?@#|'<>.^*()%!-,]).{8,}$/.test(value) ? null : 'Invalid password'),
+            termsOfService: (value: boolean) => (value ? false : 'You must agree to the terms of service')
         }
     });
 
@@ -192,6 +194,11 @@ export default function SignUp() {
                         {...form.getInputProps('confirmPassword')}
                     />
                 </SimpleGrid>
+                <Checkbox
+                    mt="md"
+                    label="I agree to the terms of service"
+                    {...form.getInputProps('termsOfService', {type: 'checkbox'})}
+                />
                 <Space h="md"/>
                 <Group position="center">
                     <Button type="submit">Submit</Button>

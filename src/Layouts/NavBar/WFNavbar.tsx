@@ -5,7 +5,7 @@ import {TbCurrencyDollar, TbPaperBag, TbReceipt, TbHome} from "react-icons/tb";
 import NavbarUser from "../../Components/NavbarContent/NavbarUser";
 
 export default function WFNavbar({opened}: { opened: boolean }) {
-    let match = useMatch("/auth/*");
+    let match = useMatch("/home/*");
 
     const elements = [
         {icon: <TbHome size={24}/>, color: 'blue', label: "Home", to: "/home"},
@@ -17,7 +17,7 @@ export default function WFNavbar({opened}: { opened: boolean }) {
     const links = elements.map((link) => <NavbarButton {...link} key={link.label}/>)
 
     return (
-        <div hidden={match !== null}>
+        <div hidden={match === null}>
             <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{sm: 200, lg: 300}}>
                 <Navbar.Section grow mt="md">{links}</Navbar.Section>
                 <Navbar.Section> <NavbarUser/> </Navbar.Section>
