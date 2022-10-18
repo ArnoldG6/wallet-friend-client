@@ -12,7 +12,7 @@ import {ResetPassword} from "./Auth/PasswordReset/PasswordReset";
 import {Earnings} from "./Home/Earnings/Earnings";
 import React, {createContext, useState} from "react";
 import User from "../Types/User/user.types";
-import ToS from "./Auth/ToS/ToS";
+import ToS from "./ToS/ToS";
 
 interface UserContextI {
     user: User | undefined,
