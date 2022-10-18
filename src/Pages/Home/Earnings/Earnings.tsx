@@ -1,17 +1,25 @@
 import {
     Accordion,
+    Badge,
+    Button,
+    Card,
     Container,
     createStyles, Divider,
-    Grid, MediaQuery,
+    Grid, Group, MediaQuery,
     ScrollArea,
-    Skeleton, Table,
+    Skeleton, Spoiler, Table,
     Title,
     useMantineTheme
 } from '@mantine/core';
 
 import {useState} from "react";
+import {NetWorthCard} from "../../../Components/EarringsCard/NetWorthCard";
 
 const useStyles = createStyles((theme) => ({
+    card: {
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    },
+
     header: {
         position: 'sticky',
         top: 0,
@@ -51,45 +59,60 @@ export function Earnings() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
 
+
     const placeholder =
         'It can’t help '
     return (
 
         <>
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
-                <Container fluid >
-                    <Grid gutter={theme.spacing.md} grow>
-                        <Grid.Col span={6}>
-                            <Container fluid>
-                                <Title size="h1" align="left">
-                                    Net Worth:
-                                </Title>
-                            </Container>
-
+                <Container fluid>
+                    <Grid gutter={theme.spacing.md}>
+                        <Grid.Col span={3}>
+                            <NetWorthCard/>
                         </Grid.Col>
                         <Grid.Col span={6}>
-                            Grafico
+
                         </Grid.Col>
                         <Grid.Col>
+                            <Card withBorder p="xl" radius="md" className={classes.card}>
+                                    <Group position="apart">
+                                        <Title color="dimmed" size="sm" align="left">
+                                            My earnings:
+                                        </Title>
 
-                            <Container fluid>
-                                <Title color="dimmed" size="sm" align="left">
-                                    My earnings:
-                                </Title>
-                            </Container>
-                            <Divider my="md"/>
-                            <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
-                                <Table sx={{minWidth: 700}}>
-                                    <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
-                                    <tr>
-                                        <th>Categories</th>
-                                        <th>Name</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </Table>
-                            </ScrollArea>
+                                        <Button >Add New Earning</Button>
+                                    </Group>
+
+                                <Divider my="md"/>
+                                <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                    <Table>
+                                        <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Name</th>
+                                            <th>Amount</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr key={"Salary"}>
+                                            <td>{"2022-10-22"}</td>
+                                            <td>{"Salary"}</td>
+                                            <td>{"200"}</td>
+                                            <td>
+                                                <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
+                                                    <td>{"ngrrrrrrr"}</td>
+                                                </Spoiler>
+
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </Table>
+                                </ScrollArea>
+                            </Card>
 
 
                         </Grid.Col>
@@ -101,16 +124,11 @@ export function Earnings() {
             <MediaQuery largerThan="md" styles={{display: "none"}}>
                 <Container my="md">
                     <Grid gutter={theme.spacing.md} grow>
-                        <Grid.Col span={6}>
-                            <Container size={460} my={30}>
-                                <Title size="h1" align="left">
-                                    Net Worth:
-                                </Title>
-                            </Container>
-
+                        <Grid.Col>
+                            <NetWorthCard/>
                         </Grid.Col>
-                        <Grid.Col span={6}>
-                            Grafico
+                        <Grid.Col>
+                            <Skeleton height={140} radius="md" animate={false}/>
                         </Grid.Col>
                         <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
