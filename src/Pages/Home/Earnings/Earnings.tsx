@@ -103,7 +103,7 @@ export function Earnings() {
                                             <td>{"200"}</td>
                                             <td>
                                                 <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
-                                                    <td>{"ngrrrrrrr"}</td>
+                                                    <div>{"ngrrrrrrr"}</div>
                                                 </Spoiler>
 
                                             </td>

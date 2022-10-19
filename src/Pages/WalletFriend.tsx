@@ -13,16 +13,25 @@ import {Earnings} from "./Home/Earnings/Earnings";
 import React, {createContext, useState} from "react";
 import User from "../Types/User/user.types";
 import ToS from "./ToS/ToS";
+import Account from "../Types/Account/account.types";
 
 interface UserContextI {
     user: User | undefined,
     setUser: React.Dispatch<React.SetStateAction<User | undefined>>
 }
 
+interface AccountContextI {
+    account: Account | undefined,
+    setAccount: React.Dispatch<React.SetStateAction<Account | undefined>>
+}
+
 export const UserContext = createContext<UserContextI>({} as UserContextI);
+
+export const AccountContext = createContext<AccountContextI>({} as AccountContextI);
 
 export default function WalletFriend() {
     const [user, setUser] = useState<User>();
+    const [account, setAccount] = useState<Account>();
 
     let router = createBrowserRouter(
         createRoutesFromElements(
@@ -49,7 +58,9 @@ export default function WalletFriend() {
 
     return (
         <UserContext.Provider value={{user, setUser}}>
-            <RouterProvider router={router}/>
+            <AccountContext.Provider value={{account, setAccount}}>
+                <RouterProvider router={router}/>
+            </AccountContext.Provider>
         </UserContext.Provider>
     );
 }

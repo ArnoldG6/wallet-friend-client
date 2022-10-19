@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useLocation, useNavigate} from "react-router-dom";
 import AuthRequest from "../Services/Requests/auth.request";
 import {useCallback, useContext, useEffect} from "react";
-import {UserContext} from "../Pages/WalletFriend";
+import {UserContext, AccountContext} from "../Pages/WalletFriend";
 
 
 export default function RequireAuth({children}: { children: any }) {
     let location = useLocation();
     const navigate = useNavigate();
     const {setUser} = useContext(UserContext);
+    const {setAccount} = useContext(AccountContext);
 
     const isAuthenticated = useCallback(() => {
         const access_token = localStorage.getItem('access_token');
@@ -16,6 +18,7 @@ export default function RequireAuth({children}: { children: any }) {
             AuthRequest.validateToken(username)
                 .then((response) => {
                     setUser(response.data.user);
+                    setAccount(response.data.account);
                 })
                 .catch(() => {
                     // Clean localStorage to be safe
