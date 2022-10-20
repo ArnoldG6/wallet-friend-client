@@ -20,7 +20,6 @@ const useStyles = createStyles((theme) => ({
     card: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     },
-
     header: {
         position: 'sticky',
         top: 0,
@@ -51,18 +50,24 @@ const useStyles = createStyles((theme) => ({
     title: {
         marginBottom: theme.spacing.xl * 1.5,
     },
+
+
 }));
 
-export function Earnings() {
+export function Expenses() {
     const theme = useMantineTheme();
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
-    const rows = account?.fixed_incomes.map((data) => (
+    const rows = account?.fixed_expenses.map((data) => (
         <tr key={data?.name}>
             <td>{data?.creation_datetime.toString()}</td>
             <td>{data?.name}</td>
-            <td><Text color={"green"}>{data?.amount}</Text></td>
+            <td>
+                <Text color={"red"}>
+                    {data?.amount}
+                </Text>
+            </td>
             <td>
                 <Spoiler maxHeight={30} showLabel="Show more" hideLabel="Hide">
                     <div>
@@ -72,19 +77,22 @@ export function Earnings() {
                     </div>
                 </Spoiler>
             </td>
-            <td style={{width: "90px"}}>
+            <td>
                 <Button color="red">
                     <MdOutlineDelete/>
                 </Button>
             </td>
         </tr>
     ));
-    const list = account?.fixed_incomes.map((data) => (
+    const list = account?.fixed_expenses.map((data) => (
         <Accordion.Item value={data?.name}>
             <Accordion.Control>{data?.name}</Accordion.Control>
             <Accordion.Panel>
                 Date: {data?.creation_datetime.toString()}<Space h="md"/>
-                Amount: {data?.amount}<Space h="md"/>
+                Amount:
+                <Text color={"red"}>
+                    {data?.amount}
+                </Text><Space h="md"/>
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
@@ -112,7 +120,7 @@ export function Earnings() {
                                     <Title color="dimmed" size="sm" align="left">
                                         My earnings:
                                     </Title>
-                                    <Button>Add New Earning</Button>
+                                    <Button>Add New Expense</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
@@ -128,6 +136,7 @@ export function Earnings() {
                                         </thead>
                                         <tbody>
                                         {rows}
+
                                         </tbody>
                                     </Table>
                                 </ScrollArea>
@@ -143,6 +152,7 @@ export function Earnings() {
                             <NetWorthCard/>
                         </Grid.Col>
                         <Grid.Col>
+
                         </Grid.Col>
                         <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
@@ -159,6 +169,7 @@ export function Earnings() {
                             </Container>
                         </Grid.Col>
                     </Grid>
+
                 </Container>
             </MediaQuery>
         </>

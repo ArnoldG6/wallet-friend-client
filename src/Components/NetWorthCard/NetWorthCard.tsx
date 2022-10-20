@@ -40,9 +40,7 @@ const useStyles = createStyles((theme) => ({
 
 
 export function NetWorthCard() {
-    const { classes, theme } = useStyles();
-
-
+    const { classes } = useStyles();
     return (
         <Card withBorder p="xl" radius="md" className={classes.card}>
             <div className={classes.inner}>
@@ -51,17 +49,13 @@ export function NetWorthCard() {
                         Net Worth
                     </Text>
                     <div>
-                        <Text className={classes.lead} mt={30}>
+                        <Text className={classes.lead} mt={30} >
                             $2000
                         </Text>
                     </div>
                 </div>
-
                 <div className={classes.ring}>
-
                         <TbDiamond size={45} color="teal" />
-
-
                 </div>
             </div>
         </Card>

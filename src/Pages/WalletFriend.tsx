@@ -14,6 +14,7 @@ import React, {createContext, useState} from "react";
 import User from "../Types/User/user.types";
 import ToS from "./ToS/ToS";
 import Account from "../Types/Account/account.types";
+import {Expenses} from "./Home/Expenses/Expenses";
 
 interface UserContextI {
     user: User | undefined,
@@ -48,7 +49,7 @@ export default function WalletFriend() {
                     <Route path="" element={<Home/>} errorElement={<NotFound/>}/>
                     <Route path="categories" element={<div>categories</div>} errorElement={<NotFound/>}/>
                     <Route path="earnings" element={<Earnings/>} errorElement={<NotFound/>}/>
-                    <Route path="expenses" element={<div>expenses</div>} errorElement={<NotFound/>}/>
+                    <Route path="expenses" element={<Expenses/>} errorElement={<NotFound/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
                 <Route path="tos" element={<ToS/>} errorElement={<NotFound/>}/>
