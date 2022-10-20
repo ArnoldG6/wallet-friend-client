@@ -3,7 +3,7 @@ import FixedMovement from "./fixedMovement.types";
 import Bag from "./bag.types";
 
 export default interface Account {
-    id: string,
+    id: number,
     owner: string, // username of the owner
     creation_datetime: Date,
     total_balance: number,

@@ -7,8 +7,13 @@ import NavbarUser from "../../Components/NavbarContent/NavbarUser";
 export default function WFNavbar({opened}: { opened: boolean }) {
     let match = useMatch("/home/*");
 
+    let matchHome = useMatch("/home");
+    let matchBags = useMatch("/home/bags/*");
+    let matchTransactions = useMatch("/home/transactions");
+    let matchReports = useMatch("/home/reports");
+
     const elements = [
-        {icon: <TbHome size={24}/>, color: 'blue', label: "Home", to: "/home"},
+        {icon: <TbHome size={24}/>, color: 'blue', label: "Home", to: "/home", },
         {icon: <TbPaperBag size={24}/>, color: 'grape', label: "Categories", to: "/home/categories"},
         {icon: <TbCurrencyDollar size={24}/>, color: 'green', label: "Earnings", to: "/home/earnings"},
         {icon: <TbReceipt size={24}/>, color: 'red', label: "Expenses", to: "/home/expenses"},
