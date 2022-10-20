@@ -92,6 +92,7 @@ export function Earnings() {
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     let sum=0;
+    const fixedEarning = account?.fixed_incomes.forEach(item => sum+=item.amount)
     const rows = account?.fixed_incomes.map((data) => (
         <tr key={data?.name}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>

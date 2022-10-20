@@ -90,6 +90,7 @@ export function Expenses() {
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     let sum = 0;
+    const fixedEarning = account?.fixed_expenses.forEach(item => sum += item.amount)
     const fixedExpenses = account?.fixed_expenses.map((data) => (
         <tr key={data?.name}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
