@@ -13,7 +13,6 @@ import {
     Table, Text, Anchor,
     Title, useMantineTheme
 } from "@mantine/core";
-import {NetWorthCard} from "../../../Components/EarringsCard/NetWorthCard";
 import {BagsStyles} from "../../../Assets/Styles/Bags.styles";
 import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";

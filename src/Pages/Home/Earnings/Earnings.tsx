@@ -13,8 +13,9 @@ import {
 } from '@mantine/core';
 import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
-import {NetWorthCard} from "../../../Components/NetWorthCard/NetWorthCard";
+import {NetWorthCard} from "../../../Components/EarringsCard/NetWorthCard";
 import {AccountContext} from "../../WalletFriend";
+import {TbDiamond} from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -51,6 +52,39 @@ const useStyles = createStyles((theme) => ({
     title: {
         marginBottom: theme.spacing.xl * 1.5,
     },
+
+
+    label: {
+        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+        fontWeight: 400,
+        lineHeight: 1,
+    },
+
+    lead: {
+        fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+        fontWeight: 700,
+        fontSize: 22,
+        lineHeight: 1,
+    },
+
+    inner: {
+        display: 'flex',
+
+        [theme.fn.smallerThan(350)]: {
+            flexDirection: 'column',
+        },
+    },
+
+    ring: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'flex-end',
+
+        [theme.fn.smallerThan(350)]: {
+            justifyContent: 'center',
+            marginTop: theme.spacing.md,
+        },
+    },
 }));
 
 export function Earnings() {
@@ -58,6 +92,8 @@ export function Earnings() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
+    let sum=0;
+    const fixedEarning = account?.fixed_incomes.forEach(item => sum+=item.amount)
     const rows = account?.fixed_incomes.map((data) => (
         <tr key={data?.name}>
             <td>{data?.creation_datetime.toString()}</td>
@@ -84,7 +120,48 @@ export function Earnings() {
             <Accordion.Control>{data?.name}</Accordion.Control>
             <Accordion.Panel>
                 Date: {data?.creation_datetime.toString()}<Space h="md"/>
-                Amount: {data?.amount}<Space h="md"/>
+                Amount: <Text color={"green"}>{data?.amount}</Text><Space h="md"/>
+                Description: {data?.description}
+                <Divider my="md"/>
+                <Group spacing={0} position="right">
+                    <ActionIcon color="red" size="xl" variant="filled">
+                        <MdOutlineDelete/>
+                    </ActionIcon>
+                </Group>
+            </Accordion.Panel>
+        </Accordion.Item>
+    ));
+    const singleEarnings = account?.single_incomes.map((data) => (
+        <tr key={data?.name}>
+            <td>{data?.creation_datetime.toString()}</td>
+            <td>{data?.name}</td>
+            <td><Text color={"green"}>
+                {data?.amount}
+            </Text></td>
+            <td style={{width: "200px"}}>
+                <Spoiler maxHeight={30} showLabel="Show more" hideLabel="Hide">
+                    <div>
+                        <Text>
+                            {data?.description}
+                        </Text>
+                    </div>
+                </Spoiler>
+            </td>
+            <td style={{width: "90px"}}>
+                <Button color="red">
+                    <MdOutlineDelete/>
+                </Button>
+            </td>
+        </tr>
+    ));
+
+
+    const singleEarningslist = account?.single_incomes.map((data) => (
+        <Accordion.Item value={data?.name}>
+            <Accordion.Control>{data?.name}</Accordion.Control>
+            <Accordion.Panel>
+                Date: {data?.creation_datetime.toString()}<Space h="md"/>
+                Amount:<Text color={"green"}>{data?.amount}</Text><Space h="md"/>
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
@@ -102,7 +179,23 @@ export function Earnings() {
                 <Container fluid>
                     <Grid gutter={theme.spacing.md}>
                         <Grid.Col span={3}>
-                            <NetWorthCard/>
+                            <Card mt={20} withBorder p="xl" radius="md" className={classes.card}>
+                                <div className={classes.inner}>
+                                    <div>
+                                        <Text mt={15} size="xl" className={classes.label}>
+                                            Net Worth
+                                        </Text>
+                                        <div>
+                                            <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
+                                                ${sum}
+                                            </Text>
+                                        </div>
+                                    </div>
+                                    <div className={classes.ring}>
+                                        <TbDiamond size={45} color="teal"/>
+                                    </div>
+                                </div>
+                            </Card>
                         </Grid.Col>
                         <Grid.Col span={6}>
                         </Grid.Col>
@@ -128,6 +221,7 @@ export function Earnings() {
                                         </thead>
                                         <tbody>
                                         {rows}
+                                        {singleEarnings}
                                         </tbody>
                                     </Table>
                                 </ScrollArea>
@@ -140,7 +234,23 @@ export function Earnings() {
                 <Container my="md">
                     <Grid gutter={theme.spacing.md} grow>
                         <Grid.Col>
-                            <NetWorthCard/>
+                            <Card mt={20} withBorder p="xl" radius="md" className={classes.card}>
+                                <div className={classes.inner}>
+                                    <div>
+                                        <Text mt={15} size="xl" className={classes.label}>
+                                            Net Worth
+                                        </Text>
+                                        <div>
+                                            <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
+                                                ${sum}
+                                            </Text>
+                                        </div>
+                                    </div>
+                                    <div className={classes.ring}>
+                                        <TbDiamond size={45} color="teal"/>
+                                    </div>
+                                </div>
+                            </Card>
                         </Grid.Col>
                         <Grid.Col>
                         </Grid.Col>
@@ -155,6 +265,7 @@ export function Earnings() {
                                 <Divider my="md"/>
                                 <Accordion variant="contained">
                                     {list}
+                                    {singleEarningslist}
                                 </Accordion>
                             </Container>
                         </Grid.Col>

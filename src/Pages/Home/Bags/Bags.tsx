@@ -11,13 +11,11 @@ import {
     Table, Text, Center,
     Title, useMantineTheme, Skeleton, Accordion
 } from "@mantine/core";
-import {TbDiamond, TbPaperBag} from "react-icons/tb";
 import {BagsStyles} from "../../../Assets/Styles/Bags.styles";
 import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {MdDeleteOutline} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
-import {NetWorthCard} from "../../../Components/EarringsCard/NetWorthCard";
 
 
 export default function Bags() {
