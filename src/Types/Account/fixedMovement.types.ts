@@ -1,6 +1,7 @@
 import BagMovement from "./bagMovement.types";
 
 export default interface FixedMovement {
+    id: number,
     owner: number, // id of the account
     creation_datetime: Date,
     name: string,
