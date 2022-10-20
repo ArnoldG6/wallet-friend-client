@@ -13,7 +13,6 @@ import {
 } from '@mantine/core';
 import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
-import {NetWorthCard} from "../../../Components/EarringsCard/NetWorthCard";
 import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
 
@@ -93,10 +92,9 @@ export function Earnings() {
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     let sum=0;
-    const fixedEarning = account?.fixed_incomes.forEach(item => sum+=item.amount)
     const rows = account?.fixed_incomes.map((data) => (
         <tr key={data?.name}>
-            <td>{data?.creation_datetime.toString()}</td>
+            <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td><Text color={"green"}>{data?.amount}</Text></td>
             <td>
@@ -110,7 +108,7 @@ export function Earnings() {
             </td>
             <td style={{width: "90px"}}>
                 <Button color="red">
-                    <MdOutlineDelete/>
+                    <MdOutlineDelete size={24}/>
                 </Button>
             </td>
         </tr>
@@ -119,13 +117,13 @@ export function Earnings() {
         <Accordion.Item value={data?.name}>
             <Accordion.Control>{data?.name}</Accordion.Control>
             <Accordion.Panel>
-                Date: {data?.creation_datetime.toString()}<Space h="md"/>
+                Date: {data?.creation_datetime.toLocaleDateString("en-US")}<Space h="md"/>
                 Amount: <Text color={"green"}>{data?.amount}</Text><Space h="md"/>
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
                     <ActionIcon color="red" size="xl" variant="filled">
-                        <MdOutlineDelete/>
+                        <MdOutlineDelete size={24}/>
                     </ActionIcon>
                 </Group>
             </Accordion.Panel>
@@ -133,7 +131,7 @@ export function Earnings() {
     ));
     const singleEarnings = account?.single_incomes.map((data) => (
         <tr key={data?.name}>
-            <td>{data?.creation_datetime.toString()}</td>
+            <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td><Text color={"green"}>
                 {data?.amount}
@@ -149,7 +147,7 @@ export function Earnings() {
             </td>
             <td style={{width: "90px"}}>
                 <Button color="red">
-                    <MdOutlineDelete/>
+                    <MdOutlineDelete size={24}/>
                 </Button>
             </td>
         </tr>
@@ -160,13 +158,13 @@ export function Earnings() {
         <Accordion.Item value={data?.name}>
             <Accordion.Control>{data?.name}</Accordion.Control>
             <Accordion.Panel>
-                Date: {data?.creation_datetime.toString()}<Space h="md"/>
+                Date: {data?.creation_datetime.toLocaleDateString("en-US")}<Space h="md"/>
                 Amount:<Text color={"green"}>{data?.amount}</Text><Space h="md"/>
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
                     <ActionIcon color="red" size="xl" variant="filled">
-                        <MdOutlineDelete/>
+                        <MdOutlineDelete size={24}/>
                     </ActionIcon>
                 </Group>
             </Accordion.Panel>
@@ -183,7 +181,7 @@ export function Earnings() {
                                 <div className={classes.inner}>
                                     <div>
                                         <Text mt={15} size="xl" className={classes.label}>
-                                            Net Worth
+                                            Net Gain
                                         </Text>
                                         <div>
                                             <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
@@ -212,10 +210,10 @@ export function Earnings() {
                                     <Table sx={{minWidth: 700}} highlightOnHover>
                                         <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
                                         <tr>
-                                            <th>Date</th>
+                                            <th style={{width: "150px"}}>Date</th>
                                             <th>Name</th>
                                             <th>Amount</th>
-                                            <th style={{width: "200px"}}>Description</th>
+                                            <th>Description</th>
                                             <th/>
                                         </tr>
                                         </thead>
@@ -238,7 +236,7 @@ export function Earnings() {
                                 <div className={classes.inner}>
                                     <div>
                                         <Text mt={15} size="xl" className={classes.label}>
-                                            Net Worth
+                                            Net Gain
                                         </Text>
                                         <div>
                                             <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
