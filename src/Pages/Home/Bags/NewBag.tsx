@@ -1,26 +1,12 @@
 import {useContext, useState} from 'react';
-import {
-    Modal,
-    Button,
-    Group,
-    Container,
-    Title,
-    Divider,
-    LoadingOverlay,
-    SimpleGrid,
-    TextInput,
-    Space, Anchor, Center, Box, createStyles, NumberInput
-} from '@mantine/core';
+import {Modal, Button, Group, SimpleGrid, TextInput, Space, Box, createStyles, NumberInput} from '@mantine/core';
 import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
 import {useForm} from "@mantine/form";
 import expenseActions from "../../../Services/Actions/Movement/expenses.action";
-import {AccountContext, UserContext} from "../../WalletFriend";
+import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
 
-export default function AddExpenses({
-                                        opened,
-                                        setOpened
-                                    }: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
+export default function NewBag({opened, setOpened}: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate();
     const {account} = useContext<any>(AccountContext);
@@ -60,10 +46,10 @@ export default function AddExpenses({
         setVisible(true);
         expenseActions(values, available_amount,account)
             .then(success => {
-            if (success){
-                setOpened((o) => !o);
-                navigate("/home/expenses", {replace: true});
-            }
+                if (success){
+                    setOpened((o) => !o);
+                    navigate("/home/bags", {replace: true});
+                }
             })
             .catch(() => {
                 setVisible(false);
@@ -74,7 +60,7 @@ export default function AddExpenses({
             <Modal
                 opened={opened}
                 onClose={() => setOpened((o) => !o)}
-                title="Add new expense!"
+                title="Add new Bag!"
             >
                 <Box
                     sx={(theme) => ({
@@ -118,7 +104,15 @@ export default function AddExpenses({
                                 icon={<MdOutlineAttachMoney/>}
                                 {...form.getInputProps('amount')}
                             />
-
+                            <NumberInput
+                                withAsterisk
+                                label="Amount"
+                                placeholder="enter an amount"
+                                radius="md"
+                                size="md"
+                                icon={<MdOutlineAttachMoney/>}
+                                {...form.getInputProps('amount')}
+                            />
                         </SimpleGrid>
                         <Space h="md"/>
                         <Group position="center">

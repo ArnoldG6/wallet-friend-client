@@ -13,8 +13,8 @@ import {
 } from '@mantine/core';
 import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
 import {useForm} from "@mantine/form";
-import expenseActions from "../../../Services/Actions/Movement/expenses.action";
-import {AccountContext, UserContext} from "../../WalletFriend";
+import earningsActions from "../../../Services/Actions/Movement/earnings.action";
+import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
 
 export default function AddExpenses({
@@ -52,18 +52,18 @@ export default function AddExpenses({
         validate: {
             name: (value) => (value.length > 0 ? null : 'A name is required'),
             description: (value) => (value.length > 0 ? null : 'A description is required'),
-            amount: (value) => (value === undefined ? null : 'An amount is required'),
+            amount: (value) => (value === undefined ? 'An amount is required' :null ),
 
         }
     });
     function handleSubmit(values: any, available_amount:any, account:any) {
         setVisible(true);
-        expenseActions(values, available_amount,account)
+        earningsActions(values, available_amount,account)
             .then(success => {
-            if (success){
-                setOpened((o) => !o);
-                navigate("/home/expenses", {replace: true});
-            }
+                if (success){
+                    setOpened((o) => !o);
+                    navigate("/home/earnings", {replace: true});
+                }
             })
             .catch(() => {
                 setVisible(false);
@@ -74,7 +74,7 @@ export default function AddExpenses({
             <Modal
                 opened={opened}
                 onClose={() => setOpened((o) => !o)}
-                title="Add new expense!"
+                title="Add new income!"
             >
                 <Box
                     sx={(theme) => ({
@@ -114,6 +114,7 @@ export default function AddExpenses({
                                 label="Amount"
                                 placeholder="enter an amount"
                                 radius="md"
+                                min ={0}
                                 size="md"
                                 icon={<MdOutlineAttachMoney/>}
                                 {...form.getInputProps('amount')}

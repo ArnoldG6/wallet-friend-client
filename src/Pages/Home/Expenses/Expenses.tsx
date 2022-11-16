@@ -236,6 +236,7 @@ export function Expenses() {
                         </Grid.Col>
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
+
                                 <Group position="apart">
                                     <AddExpenses opened={opened} setOpened={setOpened}/>
                                     <Title color="dimmed" size="sm" align="left">

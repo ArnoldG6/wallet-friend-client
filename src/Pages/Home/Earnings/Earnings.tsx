@@ -17,7 +17,7 @@ import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
 import {AreaChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Area, ResponsiveContainer} from 'recharts';
 import graphData from "../../../Services/Utils/GraphData/graphData.util";
-import {inherits} from "util";
+import AddEarnings from "../Earnings/AddEarnings";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -94,6 +94,7 @@ export function Earnings() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
+    const [opened, setOpened] = useState(false);
     let data = graphData(account?.single_incomes.slice(), account?.fixed_incomes.slice());
     let sum = 0;
     const fixedEarning = account?.fixed_incomes.forEach(item => sum += item.amount)
@@ -226,10 +227,11 @@ export function Earnings() {
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
                                 <Group position="apart">
+                                    <AddEarnings opened={opened} setOpened={setOpened}/>
                                     <Title color="dimmed" size="sm" align="left">
                                         My earnings:
                                     </Title>
-                                    <Button>Add New Earning</Button>
+                                    <Button onClick={() => setOpened(true)}>Add New Earning</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
@@ -280,10 +282,11 @@ export function Earnings() {
                         <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
                                 <Group position="apart">
+                                    <AddEarnings opened={opened} setOpened={setOpened}/>
                                     <Title color="dimmed" size="sm" align="left">
                                         My earnings:
                                     </Title>
-                                    <Button>Add New Earning</Button>
+                                    <Button onClick={() => setOpened(true)}>Add New Earning</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <Accordion variant="contained">
