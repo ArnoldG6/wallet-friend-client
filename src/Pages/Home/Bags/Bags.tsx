@@ -16,6 +16,7 @@ import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {MdDeleteOutline} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
+import NewBag from "./NewBag";
 
 
 export default function Bags() {
@@ -24,7 +25,7 @@ export default function Bags() {
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     const navigate = useNavigate();
-
+    const [opened, setOpened] = useState(false);
     return (
         <>
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
@@ -34,11 +35,12 @@ export default function Bags() {
                             <Title>Categories</Title>
                             <Card mt={20} withBorder p="xl" radius="md" className={classes.card}>
                                 <Group position="apart">
+                                    <NewBag opened={opened} setOpened={setOpened}/>
                                     <Title color="dimmed" size="sm" align="left">
                                         My categories:
                                     </Title>
 
-                                    <Button>Add New Category</Button>
+                                    <Button onClick={() => setOpened(true)}>Add New Category</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <ScrollArea onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
@@ -89,11 +91,12 @@ export default function Bags() {
                         <Grid.Col>
                             <Title mt={20}>Categories</Title>
                             <Container size="sm" className={classes.wrapper}>
+                                <NewBag opened={opened} setOpened={setOpened}/>
                                 <Group position="apart">
                                     <Title color="dimmed" size="sm" align="left">
                                         My categories:
                                     </Title>
-                                    <Button>Add New Category</Button>
+                                    <Button onClick={() => setOpened(true)}>Add New Category</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <Accordion variant="contained">

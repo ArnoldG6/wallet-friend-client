@@ -3,10 +3,6 @@ import {
     Modal,
     Button,
     Group,
-    Container,
-    Title,
-    Divider,
-    LoadingOverlay,
     SimpleGrid,
     TextInput,
     Space, Anchor, Center, Box, createStyles, NumberInput
@@ -62,7 +58,7 @@ export default function AddExpenses({
             .then(success => {
                 if (success){
                     setOpened((o) => !o);
-                    navigate("/home/earnings", {replace: true});
+                    window.location.reload();
                 }
             })
             .catch(() => {

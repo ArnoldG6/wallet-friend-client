@@ -52,7 +52,7 @@ export default function AddExpenses({
         validate: {
             name: (value) => (value.length > 0 ? null : 'A name is required'),
             description: (value) => (value.length > 0 ? null : 'A description is required'),
-            amount: (value) => (value === undefined ? null : 'An amount is required'),
+            amount: (value) => (value === undefined ? 'An amount is required' :null ),
 
         }
     });
@@ -62,7 +62,7 @@ export default function AddExpenses({
             .then(success => {
             if (success){
                 setOpened((o) => !o);
-                navigate("/home/expenses", {replace: true});
+                window.location.reload();
             }
             })
             .catch(() => {

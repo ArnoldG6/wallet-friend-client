@@ -3,7 +3,7 @@ import MovementRequest from "../../Requests/movement.request";
 import singleMovement from "../../../Types/Account/singleMovement.types";
 export default function ExpensesAction(values: any, available_amount:any, account:any) {
     const dataMovement : singleMovement = {
-        owner: 1, // id of the account
+        owner: account, // id of the account
         name: values.name,
         description: values.description,
         amount: (values.amount < 0 ? values.amount : -Math.abs(values.amount)),

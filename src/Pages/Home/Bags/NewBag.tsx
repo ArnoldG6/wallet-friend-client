@@ -1,10 +1,12 @@
 import {useContext, useState} from 'react';
 import {Modal, Button, Group, SimpleGrid, TextInput, Space, Box, createStyles, NumberInput} from '@mantine/core';
-import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
+import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdDateRange} from "react-icons/md";
 import {useForm} from "@mantine/form";
-import expenseActions from "../../../Services/Actions/Movement/expenses.action";
+import bagsActions from "../../../Services/Actions/Bag/bags.action";
 import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
+import {DatePicker} from "@mantine/dates";
+import dayjs from "dayjs";
 
 export default function NewBag({opened, setOpened}: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
@@ -31,24 +33,24 @@ export default function NewBag({opened, setOpened}: { opened: boolean, setOpened
     const form = useForm({
         initialValues: {
             name: '',
-            description: '',
-            amount: undefined,
+            goal_balance:undefined,
+            end_date: undefined,
 
         },
         validate: {
             name: (value) => (value.length > 0 ? null : 'A name is required'),
-            description: (value) => (value.length > 0 ? null : 'A description is required'),
-            amount: (value) => (value === undefined ? null : 'An amount is required'),
+            goal_balance: (value) => (value === undefined ? 'A goal is required' :null ),
+            end_date: (value) => (value === undefined ?  'A date is required': null),
 
         }
     });
-    function handleSubmit(values: any, available_amount:any, account:any) {
+    function handleSubmit(values: any, account:any) {
         setVisible(true);
-        expenseActions(values, available_amount,account)
+        bagsActions(values ,account)
             .then(success => {
                 if (success){
                     setOpened((o) => !o);
-                    navigate("/home/bags", {replace: true});
+                    window.location.reload();
                 }
             })
             .catch(() => {
@@ -71,8 +73,8 @@ export default function NewBag({opened, setOpened}: { opened: boolean, setOpened
                         position: 'relative',
                     })}
                 >
-                    <form onSubmit={form.onSubmit((values) => handleSubmit(values, (account?.available_amount + values.amount), account?.id))}>
-                        <SimpleGrid cols={2} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                    <form onSubmit={form.onSubmit((values) => handleSubmit(values, account?.id))}>
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <TextInput
                                 withAsterisk
                                 label="Name"
@@ -82,36 +84,33 @@ export default function NewBag({opened, setOpened}: { opened: boolean, setOpened
                                 icon={<MdDriveFileRenameOutline/>}
                                 {...form.getInputProps('name')}
                             />
-                            <TextInput
-                                withAsterisk
-                                label="Description"
-                                placeholder="write something"
-                                radius="md"
-                                size="md"
-                                icon={<MdTextFields/>}
-                                {...form.getInputProps('description')}
-                            />
+
                         </SimpleGrid>
                         <Space h="md"/>
 
                         <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <NumberInput
                                 withAsterisk
-                                label="Amount"
+                                label="Goal"
                                 placeholder="enter an amount"
                                 radius="md"
                                 size="md"
                                 icon={<MdOutlineAttachMoney/>}
-                                {...form.getInputProps('amount')}
+                                {...form.getInputProps('goal_balance')}
                             />
-                            <NumberInput
+
+                        </SimpleGrid>
+                        <Space h="md"/>
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                            <DatePicker
                                 withAsterisk
-                                label="Amount"
-                                placeholder="enter an amount"
+                                placeholder="Pick date"
+                                label="End Date"
                                 radius="md"
                                 size="md"
-                                icon={<MdOutlineAttachMoney/>}
-                                {...form.getInputProps('amount')}
+                                minDate={new Date()}
+                                icon={<MdDateRange/>}
+                                {...form.getInputProps('end_date')}
                             />
                         </SimpleGrid>
                         <Space h="md"/>
