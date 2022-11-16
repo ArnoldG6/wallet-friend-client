@@ -15,6 +15,7 @@ import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
+import AddExpenses from "../../../Pages/Home/Expenses/AddExpenses";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -89,6 +90,7 @@ export function Expenses() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
+    const [opened, setOpened] = useState(false);
     let sum = 0;
     const fixedEarning = account?.fixed_expenses.forEach(item => sum += item.amount)
     const fixedExpenses = account?.fixed_expenses.map((data) => (
@@ -209,10 +211,11 @@ export function Expenses() {
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
                                 <Group position="apart">
+                                    <AddExpenses opened={opened} setOpened={setOpened}/>
                                     <Title color="dimmed" size="sm" align="left">
                                         My earnings:
                                     </Title>
-                                    <Button>Add New Expense</Button>
+                                    <Button onClick={() => setOpened(true)}>Add New Expense</Button>
                                 </Group>
                                 <Divider my="md"/>
                                 <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
