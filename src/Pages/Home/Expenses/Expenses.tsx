@@ -15,6 +15,8 @@ import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import graphData from "../../../Services/Utils/GraphData/graphData.util";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -89,10 +91,11 @@ export function Expenses() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
+    let data = graphData(account?.single_expenses.slice(), account?.fixed_expenses.slice());
     let sum = 0;
     const fixedEarning = account?.fixed_expenses.forEach(item => sum += item.amount)
     const fixedExpenses = account?.fixed_expenses.map((data) => (
-        <tr key={data?.name}>
+        <tr key={data?.id}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td>
@@ -136,7 +139,7 @@ export function Expenses() {
         </Accordion.Item>
     ));
     const singleExpenses = account?.single_expenses.map((data) => (
-        <tr key={data?.name}>
+        <tr key={data?.id}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td>
@@ -204,7 +207,29 @@ export function Expenses() {
                                 </div>
                             </Card>
                         </Grid.Col>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={9}>
+                            <ResponsiveContainer>
+                                <AreaChart data={data} margin={{top: 5, right: 20, bottom: 5, left: 0}}>
+                                    <defs>
+                                        <linearGradient id="data" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#e82121" stopOpacity={0}/>
+                                            <stop offset="95%" stopColor="#e82121" stopOpacity={0.8}/>
+                                        </linearGradient>
+                                        <linearGradient id="predicted" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#f4722b" stopOpacity={0}/>
+                                            <stop offset="95%" stopColor="#f4722b" stopOpacity={0.8}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name"/>
+                                    <YAxis/>
+                                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
+                                    <Tooltip/>
+                                    <Area type="monotone" dataKey="value" stroke="#e82121" fillOpacity={1}
+                                          fill="url(#data)"/>
+                                    <Area type="monotone" dataKey="predicted" stroke="#f4722b" fillOpacity={1}
+                                          fill="url(#predicted)"/>
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </Grid.Col>
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
@@ -215,7 +240,7 @@ export function Expenses() {
                                     <Button>Add New Expense</Button>
                                 </Group>
                                 <Divider my="md"/>
-                                <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
                                     <Table sx={{minWidth: 700}} highlightOnHover>
                                         <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
                                         <tr>
@@ -227,7 +252,7 @@ export function Expenses() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {fixedExpenses}
+                                        {/*fixedExpenses*/}
                                         {singleExpenses}
                                         </tbody>
                                     </Table>
@@ -261,9 +286,6 @@ export function Expenses() {
                             </Card>
                         </Grid.Col>
                         <Grid.Col>
-
-                        </Grid.Col>
-                        <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
                                 <Group position="apart">
                                     <Title color="dimmed" size="sm" align="left">
@@ -273,7 +295,7 @@ export function Expenses() {
                                 </Group>
                                 <Divider my="md"/>
                                 <Accordion variant="contained">
-                                    {fixedExpenseslist}
+                                    {/*fixedExpenseslist*/}
                                     {singleExpenseslist}
                                 </Accordion>
                             </Container>

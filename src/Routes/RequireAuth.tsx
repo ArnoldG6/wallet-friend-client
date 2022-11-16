@@ -55,29 +55,36 @@ function fixAccountDates(account: Account) {
         });
     });
     account.fixed_expenses.forEach((fixed_expense) => {
-       fixed_expense.creation_datetime = new Date(fixed_expense.creation_datetime);
-       fixed_expense.bag_movements.forEach((bag_movement) => {
-          bag_movement.creation_datetime = new Date(bag_movement.creation_datetime);
-       });
+        fixed_expense.creation_datetime = new Date(fixed_expense.creation_datetime);
+        fixed_expense.bag_movements.forEach((bag_movement) => {
+            bag_movement.creation_datetime = new Date(bag_movement.creation_datetime);
+        });
     });
+    account.fixed_expenses.sort((a, b) => getTime(b.creation_datetime) - getTime(a.creation_datetime));
     account.fixed_incomes.forEach((fixed_income) => {
         fixed_income.creation_datetime = new Date(fixed_income.creation_datetime);
         fixed_income.bag_movements.forEach((bag_movement) => {
             bag_movement.creation_datetime = new Date(bag_movement.creation_datetime);
         });
-     })
+    })
+    account.fixed_incomes.sort((a, b) => getTime(b.creation_datetime) - getTime(a.creation_datetime))
     account.single_expenses.forEach((single_expense) => {
         single_expense.creation_datetime = new Date(single_expense.creation_datetime);
         single_expense.bag_movements.forEach((bag_movement) => {
             bag_movement.creation_datetime = new Date(bag_movement.creation_datetime);
         });
     });
+    account.single_expenses.sort((a, b) => getTime(b.creation_datetime) - getTime(a.creation_datetime))
     account.single_incomes.forEach((single_income) => {
         single_income.creation_datetime = new Date(single_income.creation_datetime);
         single_income.bag_movements.forEach((bag_movement) => {
             bag_movement.creation_datetime = new Date(bag_movement.creation_datetime);
         });
     });
-    console.log(account);
+    account.single_incomes.sort((a, b) => getTime(b.creation_datetime) - getTime(a.creation_datetime))
     return account;
+}
+
+function getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
 }

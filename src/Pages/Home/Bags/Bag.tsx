@@ -26,7 +26,6 @@ export default function Bag() {
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     const bag = account?.bags.find(bag => bag.id.toString() === id);
-    console.log(account)
     const navigate = useNavigate();
 
     function findOrigin(id: number) {
@@ -92,7 +91,7 @@ export default function Bag() {
                                 </Group>
 
                                 <Divider my="md"/>
-                                <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                <ScrollArea sx={{height: 400}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
                                     <Table>
                                         <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
                                         <tr>
@@ -146,9 +145,6 @@ export default function Bag() {
                                     </div>
                                 </div>
                             </Card>
-                        </Grid.Col>
-                        <Grid.Col>
-                            <Skeleton height={140} radius="md" animate={false}/>
                         </Grid.Col>
                         <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
