@@ -15,6 +15,9 @@ import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
+import {AreaChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Area, ResponsiveContainer} from 'recharts';
+import graphData from "../../../Services/Utils/GraphData/graphData.util";
+import {inherits} from "util";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -91,10 +94,11 @@ export function Earnings() {
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
-    let sum=0;
-    const fixedEarning = account?.fixed_incomes.forEach(item => sum+=item.amount)
+    let data = graphData(account?.single_incomes.slice(), account?.fixed_incomes.slice());
+    let sum = 0;
+    const fixedEarning = account?.fixed_incomes.forEach(item => sum += item.amount)
     const rows = account?.fixed_incomes.map((data) => (
-        <tr key={data?.name}>
+        <tr key={data?.id}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td><Text color={"green"}>{data?.amount}</Text></td>
@@ -131,7 +135,7 @@ export function Earnings() {
         </Accordion.Item>
     ));
     const singleEarnings = account?.single_incomes.map((data) => (
-        <tr key={data?.name}>
+        <tr key={data?.id}>
             <td>{data?.creation_datetime.toLocaleDateString("en-US")}</td>
             <td>{data?.name}</td>
             <td><Text color={"green"}>
@@ -185,7 +189,8 @@ export function Earnings() {
                                             Net Gain
                                         </Text>
                                         <div>
-                                            <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
+                                            <Text className={classes.lead} mt={20}
+                                                  color={sum === undefined ? "white" : sum > 0 ? "green" : "red"}>
                                                 ${sum}
                                             </Text>
                                         </div>
@@ -196,7 +201,27 @@ export function Earnings() {
                                 </div>
                             </Card>
                         </Grid.Col>
-                        <Grid.Col span={6}>
+                        <Grid.Col span={9}>
+                            <ResponsiveContainer>
+                                <AreaChart data={data} margin={{top: 5, right: 20, bottom: 5, left: 0}}>
+                                    <defs>
+                                        <linearGradient id="data" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b417" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="#10b417" stopOpacity={0}/>
+                                        </linearGradient>
+                                        <linearGradient id="predicted" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#13678a" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="#13678a" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name"/>
+                                    <YAxis/>
+                                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5"/>
+                                    <Tooltip/>
+                                    <Area type="monotone" dataKey="value" stroke="#10b417" fillOpacity={1} fill="url(#data)" />
+                                    <Area type="monotone" dataKey="predicted" stroke="#13678a" fillOpacity={1} fill="url(#predicted)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </Grid.Col>
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
@@ -207,7 +232,7 @@ export function Earnings() {
                                     <Button>Add New Earning</Button>
                                 </Group>
                                 <Divider my="md"/>
-                                <ScrollArea sx={{height: 300}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
                                     <Table sx={{minWidth: 700}} highlightOnHover>
                                         <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
                                         <tr>
@@ -219,7 +244,7 @@ export function Earnings() {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {rows}
+                                        {/*rows*/}
                                         {singleEarnings}
                                         </tbody>
                                     </Table>
@@ -240,7 +265,8 @@ export function Earnings() {
                                             Net Gain
                                         </Text>
                                         <div>
-                                            <Text className={classes.lead} mt={20} color={sum === undefined ? "white" : sum> 0 ? "green" : "red"}>
+                                            <Text className={classes.lead} mt={20}
+                                                  color={sum === undefined ? "white" : sum > 0 ? "green" : "red"}>
                                                 ${sum}
                                             </Text>
                                         </div>
@@ -252,8 +278,6 @@ export function Earnings() {
                             </Card>
                         </Grid.Col>
                         <Grid.Col>
-                        </Grid.Col>
-                        <Grid.Col>
                             <Container size="sm" className={classes.wrapper}>
                                 <Group position="apart">
                                     <Title color="dimmed" size="sm" align="left">
@@ -263,7 +287,7 @@ export function Earnings() {
                                 </Group>
                                 <Divider my="md"/>
                                 <Accordion variant="contained">
-                                    {list}
+                                    {/*list*/}
                                     {singleEarningslist}
                                 </Accordion>
                             </Container>
