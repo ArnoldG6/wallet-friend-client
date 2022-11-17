@@ -9,6 +9,7 @@ import {AccountContext} from "../../WalletFriend";
 import {MdReceipt, MdMoney} from "react-icons/md";
 import {useForm} from "@mantine/form";
 import assignToBagActions from "../../../Services/Actions/Bag/asignMovement.action";
+import {useNavigate} from "react-router-dom";
 
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -38,6 +39,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 
 export default  function AddMovement({opened, setOpened, id}: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void, id:any }) {
     const {account} = useContext(AccountContext);
+    const navigate= useNavigate();
     const data1 =account?.single_incomes.slice();
     const data2= account?.single_expenses.slice();
     // @ts-ignore

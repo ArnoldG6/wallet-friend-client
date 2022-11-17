@@ -20,24 +20,7 @@ export default function AddExpenses({
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate();
     const {account} = useContext<any>(AccountContext);
-    const useStyles = createStyles((theme) => ({
-        title: {
-            fontSize: 26,
-            fontWeight: 900,
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        },
-        controls: {
-            [theme.fn.smallerThan('xs')]: {
-                flexDirection: 'column-reverse',
-            },
-        },
-        control: {
-            [theme.fn.smallerThan('xs')]: {
-                width: '100%',
-                textAlign: 'center',
-            },
-        },
-    }));
+
     const form = useForm({
         initialValues: {
             name: '',

@@ -105,7 +105,7 @@ export default function Bag() {
                                         <tbody>
                                         {bag?.history.map((history, index) => (
                                             <tr key={index}>
-                                                <td>{history.amount > 0 ? "+" + history.amount : "-" + history.amount}</td>
+                                                <td>{history.amount > 0 ? "+" + history.amount : history.amount}</td>
                                                 <td>{history.creation_datetime.toLocaleDateString("en-US")}</td>
                                                 <td>{findOrigin(history.origin)}</td>
                                             </tr>

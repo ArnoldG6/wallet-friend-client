@@ -19,6 +19,7 @@ export default function AddEarnings({
                                     }: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
     const {account} = useContext<any>(AccountContext);
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -40,7 +41,7 @@ export default function AddEarnings({
             .then(success => {
                 if (success){
                     setOpened((o) => !o);
-                    window.location.reload();
+                   window.location.reload();
                 }
             })
             .catch(() => {
