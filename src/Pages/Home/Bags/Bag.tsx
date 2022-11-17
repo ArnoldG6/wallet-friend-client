@@ -18,6 +18,7 @@ import {useContext, useState} from "react";
 import {AccountContext} from "../../WalletFriend";
 import {TbDiamond} from "react-icons/tb";
 import {MdKeyboardArrowLeft} from "react-icons/md";
+import AddMovement from "./AddMovement";
 
 export default function Bag() {
     const id = useParams().id;
@@ -27,7 +28,7 @@ export default function Bag() {
     const {account} = useContext(AccountContext);
     const bag = account?.bags.find(bag => bag.id.toString() === id);
     const navigate = useNavigate();
-
+    const [opened, setOpened] = useState(false);
     function findOrigin(id: number) {
         if (account !== undefined) {
             if (account.single_incomes.find(income => income.id === id) !== undefined) {
@@ -82,12 +83,13 @@ export default function Bag() {
                         </Grid.Col>
                         <Grid.Col>
                             <Card withBorder p="xl" radius="md" className={classes.card}>
+                                <AddMovement opened={opened} setOpened={setOpened} id={id}/>
                                 <Group position="apart">
                                     <Title color="dimmed" size="sm" align="left">
                                         History:
                                     </Title>
 
-                                    <Button>Link New Movement</Button>
+                                    <Button onClick={() => setOpened(true)}>Link New Movement</Button>
                                 </Group>
 
                                 <Divider my="md"/>

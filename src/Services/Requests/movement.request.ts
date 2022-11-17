@@ -5,6 +5,7 @@ import successNotification from "../Utils/Notifications/success.util";
 import errorNotification from "../Utils/Notifications/error.util";
 import singleMovement from "../../Types/Account/singleMovement.types";
 import FixedMovements from "../../Types/Account/fixedMovements.types";
+import AssignToBag from "../../Types/Account/assignToBag.types";
 
 class MovementRequest {
     async createSingleMovement(data: singleMovement) {
@@ -79,8 +80,28 @@ class MovementRequest {
             });
     }
 
-    async assignToBag(data: BagMovement) {
-        return await getAxiosInstance().post<any>("/movements/assign-to-bag", data);
+    async assignToBag(data: AssignToBag) {
+        return await getAxiosInstance().patch<any>("/movements/assign-to-bag", data)
+            .then(function (response) {
+                // handle success
+                successNotification("Success", "You have successfully added a new movement!");
+                return true;
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    errorNotification("Uh oh!", error.response.data.message);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    errorNotification("Uh oh!", "There was an error connecting to the server.");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    errorNotification("Uh oh!", "There was an unexpected error.");
+                }
+            });
     }
 }
 

@@ -5,7 +5,7 @@ export default function EarningsAction(values: any, available_amount:any, accoun
         owner: account, // id of the account
         name: values.name,
         description: values.description,
-        amount: (values.amount < 0 ? values.amount : -Math.abs(values.amount)),
+        amount: (values.amount < 0 ? Math.abs(values.amount) : values.amount),
         available_amount: (values.amount < 0 ? Math.abs(values.amount): values.amount),
     };
     return MovementRequest.createSingleMovement(dataMovement).then(success => {

@@ -13,31 +13,13 @@ import earningsActions from "../../../Services/Actions/Single_Movement/earnings.
 import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
 
-export default function AddExpenses({
+export default function AddEarnings({
                                         opened,
                                         setOpened
                                     }: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
-    const navigate = useNavigate();
     const {account} = useContext<any>(AccountContext);
-    const useStyles = createStyles((theme) => ({
-        title: {
-            fontSize: 26,
-            fontWeight: 900,
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        },
-        controls: {
-            [theme.fn.smallerThan('xs')]: {
-                flexDirection: 'column-reverse',
-            },
-        },
-        control: {
-            [theme.fn.smallerThan('xs')]: {
-                width: '100%',
-                textAlign: 'center',
-            },
-        },
-    }));
+
     const form = useForm({
         initialValues: {
             name: '',
