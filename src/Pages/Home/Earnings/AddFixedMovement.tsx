@@ -5,61 +5,45 @@ import {
     Group,
     SimpleGrid,
     TextInput,
-    Space,  Box, createStyles, NumberInput
+    Space, Anchor, Center, Box, createStyles, NumberInput, Select
 } from '@mantine/core';
-import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
+import {MdDateRange, MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
 import {useForm} from "@mantine/form";
-import expenseActions from "../../../Services/Actions/Single_Movement/expenses.action";
-import {AccountContext, UserContext} from "../../WalletFriend";
+import earningsActions from "../../../Services/Actions/Fixed_Movement/fixedEarning.action";
+import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
+import {DatePicker} from "@mantine/dates";
 
-export default function AddExpenses({
+export default function AddFixedMovement({
                                         opened,
                                         setOpened
                                     }: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate();
     const {account} = useContext<any>(AccountContext);
-    const useStyles = createStyles((theme) => ({
-        title: {
-            fontSize: 26,
-            fontWeight: 900,
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        },
-        controls: {
-            [theme.fn.smallerThan('xs')]: {
-                flexDirection: 'column-reverse',
-            },
-        },
-        control: {
-            [theme.fn.smallerThan('xs')]: {
-                width: '100%',
-                textAlign: 'center',
-            },
-        },
-    }));
+
     const form = useForm({
         initialValues: {
             name: '',
-            description: '',
             amount: undefined,
-
+            repeat_date: undefined,
+            temporary_type: '',
         },
         validate: {
             name: (value) => (value.length > 0 ? null : 'A name is required'),
-            description: (value) => (value.length > 0 ? null : 'A description is required'),
             amount: (value) => (value === undefined ? 'An amount is required' :null ),
+            repeat_date: (value) => (value === undefined ?  'A date is required': null),
 
         }
     });
-    function handleSubmit(values: any, available_amount:any, account:any) {
+    function handleSubmit(values: any,  account:any) {
         setVisible(true);
-        expenseActions(values, available_amount,account)
+        earningsActions(values,account)
             .then(success => {
-            if (success){
-                setOpened((o) => !o);
-                window.location.reload();
-            }
+                if (success){
+                    setOpened((o) => !o);
+                    window.location.reload();
+                }
             })
             .catch(() => {
                 setVisible(false);
@@ -70,7 +54,7 @@ export default function AddExpenses({
             <Modal
                 opened={opened}
                 onClose={() => setOpened((o) => !o)}
-                title="Add new expense!"
+                title="Add new income!"
             >
                 <Box
                     sx={(theme) => ({
@@ -81,7 +65,7 @@ export default function AddExpenses({
                         position: 'relative',
                     })}
                 >
-                    <form onSubmit={form.onSubmit((values) => handleSubmit(values, (account?.available_amount + values.amount), account?.id))}>
+                    <form onSubmit={form.onSubmit((values) => handleSubmit(values, account?.id))}>
                         <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <TextInput
                                 withAsterisk
@@ -92,17 +76,7 @@ export default function AddExpenses({
                                 icon={<MdDriveFileRenameOutline/>}
                                 {...form.getInputProps('name')}
                             />
-                        </SimpleGrid>
-                            <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
-                            <TextInput
-                                withAsterisk
-                                label="Description"
-                                placeholder="write something"
-                                radius="md"
-                                size="md"
-                                icon={<MdTextFields/>}
-                                {...form.getInputProps('description')}
-                            />
+
                         </SimpleGrid>
                         <Space h="md"/>
 
@@ -110,13 +84,44 @@ export default function AddExpenses({
                             <NumberInput
                                 withAsterisk
                                 label="Amount"
-                                placeholder="enter an amount"
+                                placeholder="Enter an amount"
                                 radius="md"
+                                min ={0}
                                 size="md"
                                 icon={<MdOutlineAttachMoney/>}
                                 {...form.getInputProps('amount')}
                             />
 
+                        </SimpleGrid>
+
+                        <Space h="md"/>
+
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                            <DatePicker
+                                withAsterisk
+                                placeholder="Pick date"
+                                label="Repeat date"
+                                radius="md"
+                                size="md"
+                                minDate={new Date()}
+                                icon={<MdDateRange/>}
+                                {...form.getInputProps('repeat_date')}
+                            />
+                        </SimpleGrid>
+                        <Space h="md"/>
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                            <Select
+                                label="Time"
+                                placeholder="Pick one"
+                                data={[
+                                    { value: "", label: "Select an option", disabled: true},
+                                    { value: 'monthly', label: 'Monthly' },
+                                    { value: 'twice a month', label: 'Twice a month' },
+                                    { value: 'weekly', label: 'Weekly' },
+
+                                ]}
+                                {...form.getInputProps('temporary_type')}
+                            />
                         </SimpleGrid>
                         <Space h="md"/>
                         <Group position="center">

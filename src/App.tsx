@@ -1,6 +1,7 @@
 import WalletFriend from "./Pages/WalletFriend";
 import React, {useState} from "react";
 import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
+import { ModalsProvider } from '@mantine/modals';
 import {NotificationsProvider} from "@mantine/notifications";
 
 export default function App() {
@@ -21,9 +22,11 @@ export default function App() {
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS theme={{colorScheme}}>
+                <ModalsProvider>
                 <NotificationsProvider>
                     <WalletFriend/>
                 </NotificationsProvider>
+                    </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );

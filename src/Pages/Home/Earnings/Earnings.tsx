@@ -9,7 +9,7 @@ import {
     ScrollArea,
     Spoiler, Table,
     Title,
-    useMantineTheme, Space, ActionIcon
+    useMantineTheme, Space, ActionIcon, Tabs
 } from '@mantine/core';
 import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
@@ -18,6 +18,9 @@ import {TbDiamond} from "react-icons/tb";
 import {AreaChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Area, ResponsiveContainer} from 'recharts';
 import graphData from "../../../Services/Utils/GraphData/graphData.util";
 import AddEarnings from "../Earnings/AddEarnings";
+import AddFixedMovement from "../Earnings/AddFixedMovement";
+import deleteActions from "../../../Services/Actions/Single_Movement/delete.action";
+import {openConfirmModal} from "@mantine/modals";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -90,11 +93,36 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function Earnings() {
+    function handleDelete(values: any) {
+        deleteActions(values)
+            .then(success => {
+                if (success){
+                    window.location.reload();
+                }
+            })
+            .catch(() => {
+            })
+    }
+    const openDeleteModal = (index:any) =>
+        openConfirmModal({
+            title: 'Delete your movement',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this movement? This action is destructive.
+                </Text>
+            ),
+            labels: { confirm: 'Delete', cancel: "Cancel" },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => handleDelete(index),
+        });
     const theme = useMantineTheme();
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     const [opened, setOpened] = useState(false);
+    const [openedF, setOpenedF] = useState(false);
     let data = graphData(account?.single_incomes.slice(), account?.fixed_incomes.slice());
     let sum = 0;
     const fixedEarning = account?.fixed_incomes.forEach(item => sum += item.amount)
@@ -113,7 +141,7 @@ export function Earnings() {
                 </Spoiler>
             </td>
             <td style={{width: "90px"}}>
-                <Button color="red">
+                <Button color="red" onClick={() => openDeleteModal(data?.id)}>
                     <MdOutlineDelete size={24}/>
                 </Button>
             </td>
@@ -152,7 +180,7 @@ export function Earnings() {
                 </Spoiler>
             </td>
             <td style={{width: "90px"}}>
-                <Button color="red">
+                <Button color="red" onClick={() => openDeleteModal(data?.id)}>
                     <MdOutlineDelete size={24}/>
                 </Button>
             </td>
@@ -169,7 +197,7 @@ export function Earnings() {
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
-                    <ActionIcon color="red" size="xl" variant="filled">
+                    <ActionIcon color="red" size="xl" onClick={() => openDeleteModal(data?.id)}variant="filled">
                         <MdOutlineDelete size={24}/>
                     </ActionIcon>
                 </Group>
@@ -225,33 +253,78 @@ export function Earnings() {
                             </ResponsiveContainer>
                         </Grid.Col>
                         <Grid.Col>
-                            <Card withBorder p="xl" radius="md" className={classes.card}>
-                                <Group position="apart">
-                                    <AddEarnings opened={opened} setOpened={setOpened}/>
-                                    <Title color="dimmed" size="sm" align="left">
-                                        My earnings:
-                                    </Title>
-                                    <Button onClick={() => setOpened(true)}>Add New Earning</Button>
-                                </Group>
-                                <Divider my="md"/>
-                                <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
-                                    <Table sx={{minWidth: 700}} highlightOnHover>
-                                        <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
-                                        <tr>
-                                            <th style={{width: "150px"}}>Date</th>
-                                            <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Description</th>
-                                            <th/>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {/*rows*/}
-                                        {singleEarnings}
-                                        </tbody>
-                                    </Table>
-                                </ScrollArea>
-                            </Card>
+                            <Tabs defaultValue="single_movements" >
+                                <Tabs.List>
+                                    <Tabs.Tab value="single_movements" >Movements</Tabs.Tab>
+                                    <Tabs.Tab value="fixed_movements" >Fixed movements</Tabs.Tab>
+                                </Tabs.List>
+
+                                <Tabs.Panel value="fixed_movements" pt="xs">
+                                    <Card withBorder p="xl" radius="md" className={classes.card}>
+                                        <Group position="apart">
+                                            <AddFixedMovement opened={openedF} setOpened={setOpenedF}/>
+                                            <Title color="dimmed" size="sm" align="left">
+                                                My earnings:
+                                            </Title>
+                                            <Button onClick={() => setOpenedF(true)}>Add New Fixed Earrning</Button>
+                                        </Group>
+                                        <Divider my="md"/>
+                                        <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                            <Table sx={{minWidth: 500}} highlightOnHover>
+                                                <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                                <tr>
+                                                    <th style={{width: "150px"}}>Date</th>
+                                                    <th>Name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th/>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {rows}
+                                                </tbody>
+                                            </Table>
+                                        </ScrollArea>
+                                    </Card>
+                                </Tabs.Panel>
+
+                                <Tabs.Panel value="single_movements" pt="xs">
+                                    <Card withBorder p="xl" radius="md" className={classes.card}>
+                                        <Group position="apart">
+                                            <AddEarnings opened={opened} setOpened={setOpened}/>
+                                            <Title color="dimmed" size="sm" align="left">
+                                                My earnings:
+                                            </Title>
+                                            <Button onClick={() => setOpened(true)}>Add New Earning</Button>
+                                        </Group>
+                                        <Divider my="md"/>
+                                        <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                            <Table sx={{minWidth: 500}} highlightOnHover>
+                                                <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                                <tr>
+                                                    <th style={{width: "150px"}}>Date</th>
+                                                    <th>Name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th/>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {/*rows*/}
+                                                {singleEarnings}
+                                                </tbody>
+                                            </Table>
+                                        </ScrollArea>
+                                    </Card>
+                                </Tabs.Panel>
+
+
+                            </Tabs>
+
+                            <Space h="md"/>
+                            <Divider/>
+                            <Space h="md"/>
+
                         </Grid.Col>
                     </Grid>
                 </Container>

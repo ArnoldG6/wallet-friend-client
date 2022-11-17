@@ -9,7 +9,7 @@ import {
     ScrollArea,
     Spoiler, Table,
     Title,
-    useMantineTheme, Space, ActionIcon
+    useMantineTheme, Space, ActionIcon, Tabs
 } from '@mantine/core';
 import {MdOutlineDelete} from "react-icons/md";
 import {useContext, useState} from "react";
@@ -18,6 +18,9 @@ import {TbDiamond} from "react-icons/tb";
 import AddExpenses from "../../../Pages/Home/Expenses/AddExpenses";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import graphData from "../../../Services/Utils/GraphData/graphData.util";
+import AddFixedExpense from './AddFixedExpense';
+import {openConfirmModal} from "@mantine/modals";
+import deleteActions from "../../../Services/Actions/Single_Movement/delete.action";
 
 
 const useStyles = createStyles((theme) => ({
@@ -89,11 +92,36 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function Expenses() {
+    function handleDelete(values: any) {
+        deleteActions(values)
+            .then(success => {
+                if (success){
+                    window.location.reload();
+                }
+            })
+            .catch(() => {
+            })
+    }
+    const openDeleteModal = (index:any) =>
+        openConfirmModal({
+            title: 'Delete your movement',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this movement? This action is destructive.
+                </Text>
+            ),
+            labels: { confirm: 'Delete', cancel: "Cancel" },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => handleDelete(index),
+        });
     const theme = useMantineTheme();
     const {classes, cx} = useStyles();
     const [scrolled, setScrolled] = useState(false);
     const {account} = useContext(AccountContext);
     const [opened, setOpened] = useState(false);
+    const [openedF, setOpenedF] = useState(false);
     let data = graphData(account?.single_expenses.slice(), account?.fixed_expenses.slice());
     let sum = 0;
     const fixedEarning = account?.fixed_expenses.forEach(item => sum += item.amount)
@@ -116,7 +144,7 @@ export function Expenses() {
                 </Spoiler>
             </td>
             <td>
-                <Button color="red">
+                <Button color="red"  onClick={() => openDeleteModal(data?.id)}>
                     <MdOutlineDelete size={24}/>
                 </Button>
             </td>
@@ -160,14 +188,14 @@ export function Expenses() {
                 </Spoiler>
             </td>
             <td>
-                <Button color="red">
+                <Button color="red"  onClick={() => openDeleteModal(data?.id)}>
                     <MdOutlineDelete size={24}/>
                 </Button>
             </td>
         </tr>
     ));
     const singleExpenseslist = account?.single_expenses.map((data) => (
-        <Accordion.Item value={data?.name}>
+        <Accordion.Item value={data?.id.toString()}>
             <Accordion.Control>{data?.name}</Accordion.Control>
             <Accordion.Panel>
                 Date: {data?.creation_datetime.toLocaleDateString("en-US")}<Space h="md"/>
@@ -178,7 +206,7 @@ export function Expenses() {
                 Description: {data?.description}
                 <Divider my="md"/>
                 <Group spacing={0} position="right">
-                    <ActionIcon color="red" size="xl" variant="filled">
+                    <ActionIcon color="red" onClick= {() => openDeleteModal(data?.id)}size="xl" variant="filled">
                         <MdOutlineDelete size={24}/>
                     </ActionIcon>
                 </Group>
@@ -235,34 +263,76 @@ export function Expenses() {
                             </ResponsiveContainer>
                         </Grid.Col>
                         <Grid.Col>
-                            <Card withBorder p="xl" radius="md" className={classes.card}>
+                            <Tabs defaultValue="single_movements" >
+                                <Tabs.List>
+                                    <Tabs.Tab value="single_movements" >Movements</Tabs.Tab>
+                                    <Tabs.Tab value="fixed_movements" >Fixed movements</Tabs.Tab>
+                                </Tabs.List>
 
-                                <Group position="apart">
-                                    <AddExpenses opened={opened} setOpened={setOpened}/>
-                                    <Title color="dimmed" size="sm" align="left">
-                                        My earnings:
-                                    </Title>
-                                    <Button onClick={() => setOpened(true)}>Add New Expense</Button>
-                                </Group>
-                                <Divider my="md"/>
-                                <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
-                                    <Table sx={{minWidth: 700}} highlightOnHover>
-                                        <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
-                                        <tr>
-                                            <th style={{width: "150px"}}>Date</th>
-                                            <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Description</th>
-                                            <th/>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {/*fixedExpenses*/}
-                                        {singleExpenses}
-                                        </tbody>
-                                    </Table>
-                                </ScrollArea>
-                            </Card>
+                                <Tabs.Panel value="single_movements" pt="xs">
+                                    <Card withBorder p="xl" radius="md" className={classes.card}>
+
+                                        <Group position="apart">
+                                            <AddExpenses opened={opened} setOpened={setOpened}/>
+                                            <Title color="dimmed" size="sm" align="left">
+                                                My earnings:
+                                            </Title>
+                                            <Button onClick={() => setOpened(true)}>Add New Expense</Button>
+                                        </Group>
+                                        <Divider my="md"/>
+                                        <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                            <Table sx={{minWidth: 700}} highlightOnHover>
+                                                <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                                <tr>
+                                                    <th style={{width: "150px"}}>Date</th>
+                                                    <th>Name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th/>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {/*fixedExpenses*/}
+                                                {singleExpenses}
+                                                </tbody>
+                                            </Table>
+                                        </ScrollArea>
+                                    </Card>
+                                </Tabs.Panel>
+
+                                <Tabs.Panel value="fixed_movements" pt="xs">
+
+                                    <Card withBorder p="xl" radius="md" className={classes.card}>
+
+                                        <Group position="apart">
+                                            <AddFixedExpense opened={openedF} setOpened={setOpenedF}/>
+                                            <AddExpenses opened={opened} setOpened={setOpened}/>
+                                            <Title color="dimmed" size="sm" align="left">
+                                                My earnings:
+                                            </Title>
+                                            <Button onClick={() => setOpenedF(true)}>Add New Fixed Expense</Button>
+                                        </Group>
+                                        <Divider my="md"/>
+                                        <ScrollArea sx={{height: 450}} onScrollPositionChange={({y}) => setScrolled(y !== 0)}>
+                                            <Table sx={{minWidth: 700}} highlightOnHover>
+                                                <thead className={cx(classes.header, {[classes.scrolled]: scrolled})}>
+                                                <tr>
+                                                    <th style={{width: "150px"}}>Date</th>
+                                                    <th>Name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th/>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {fixedExpenses}
+                                                </tbody>
+                                            </Table>
+                                        </ScrollArea>
+                                    </Card>
+                                </Tabs.Panel>
+                            </Tabs>
+
                         </Grid.Col>
                     </Grid>
                 </Container>

@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdTextFields} from "react-icons/md";
 import {useForm} from "@mantine/form";
-import earningsActions from "../../../Services/Actions/Movement/earnings.action";
+import earningsActions from "../../../Services/Actions/Single_Movement/earnings.action";
 import {AccountContext} from "../../WalletFriend";
 import {useNavigate} from "react-router-dom";
 
@@ -82,7 +82,7 @@ export default function AddExpenses({
                     })}
                 >
                     <form onSubmit={form.onSubmit((values) => handleSubmit(values, (account?.available_amount + values.amount), account?.id))}>
-                        <SimpleGrid cols={2} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <TextInput
                                 withAsterisk
                                 label="Name"
@@ -92,6 +92,8 @@ export default function AddExpenses({
                                 icon={<MdDriveFileRenameOutline/>}
                                 {...form.getInputProps('name')}
                             />
+                        </SimpleGrid>
+                            <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <TextInput
                                 withAsterisk
                                 label="Description"

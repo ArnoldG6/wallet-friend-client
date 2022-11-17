@@ -17,6 +17,8 @@ import {AccountContext} from "../../WalletFriend";
 import {MdDeleteOutline} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
 import NewBag from "./NewBag";
+import deleteBag from "../../../Services/Actions/Bag/DeleteBag.action";
+import {openConfirmModal} from "@mantine/modals";
 
 
 export default function Bags() {
@@ -26,6 +28,30 @@ export default function Bags() {
     const {account} = useContext(AccountContext);
     const navigate = useNavigate();
     const [opened, setOpened] = useState(false);
+    function handleDelete(values: any) {
+        deleteBag(values)
+            .then(success => {
+                if (success){
+                    window.location.reload();
+                }
+            })
+            .catch(() => {
+            })
+    }
+    const openDeleteModal = (index:any) =>
+        openConfirmModal({
+            title: 'Delete your bag',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this bag? This action is destructive.
+                </Text>
+            ),
+            labels: { confirm: 'Delete', cancel: "Cancel" },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => handleDelete(index),
+        });
     return (
         <>
             <MediaQuery smallerThan="md" styles={{display: "none"}}>
@@ -67,7 +93,7 @@ export default function Bags() {
                                                     </Button>
                                                 </td>
                                                 <td style={{width: "60px"}}>
-                                                    <Button variant="gradient" gradient={{from: 'orange', to: 'red'}}>
+                                                    <Button variant="gradient" onClick={() => openDeleteModal(category?.id)} gradient={{from: 'orange', to: 'red'}}>
                                                         <MdDeleteOutline size={24}/>
                                                     </Button>
                                                 </td>

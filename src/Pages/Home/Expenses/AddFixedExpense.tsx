@@ -1,52 +1,42 @@
 import {useContext, useState} from 'react';
-import {Modal, Button, Group, SimpleGrid, TextInput, Space, Box, createStyles, NumberInput} from '@mantine/core';
-import {MdDriveFileRenameOutline, MdOutlineAttachMoney, MdDateRange} from "react-icons/md";
+import {
+    Modal,
+    Button,
+    Group,
+    SimpleGrid,
+    TextInput,
+    Space,  Box, NumberInput, Select
+} from '@mantine/core';
+import {MdDateRange, MdDriveFileRenameOutline, MdOutlineAttachMoney} from "react-icons/md";
 import {useForm} from "@mantine/form";
-import bagsActions from "../../../Services/Actions/Bag/bags.action";
+import expenseActions from "../../../Services/Actions/Fixed_Movement/fixedExpense.action";
 import {AccountContext} from "../../WalletFriend";
-import {useNavigate} from "react-router-dom";
 import {DatePicker} from "@mantine/dates";
 
-
-export default function NewBag({opened, setOpened}: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
+export default function AddFixedMovement({
+                                             opened,
+                                             setOpened
+                                         }: { opened: boolean, setOpened: (opened: (o: any) => boolean) => void }) {
     const [visible, setVisible] = useState(false);
-    const navigate = useNavigate();
     const {account} = useContext<any>(AccountContext);
-    const useStyles = createStyles((theme) => ({
-        title: {
-            fontSize: 26,
-            fontWeight: 900,
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-        },
-        controls: {
-            [theme.fn.smallerThan('xs')]: {
-                flexDirection: 'column-reverse',
-            },
-        },
-        control: {
-            [theme.fn.smallerThan('xs')]: {
-                width: '100%',
-                textAlign: 'center',
-            },
-        },
-    }));
+
     const form = useForm({
         initialValues: {
             name: '',
-            goal_balance:undefined,
-            end_date: undefined,
-
+            amount: undefined,
+            repeat_date: undefined,
+            temporary_type: '',
         },
         validate: {
             name: (value) => (value.length > 0 ? null : 'A name is required'),
-            goal_balance: (value) => (value === undefined ? 'A goal is required' :null ),
-            end_date: (value) => (value === undefined ?  'A date is required': null),
+            amount: (value) => (value === undefined ? 'An amount is required' :null ),
+            repeat_date: (value) => (value === undefined ?  'A date is required': null),
 
         }
     });
-    function handleSubmit(values: any, account:any) {
+    function handleSubmit(values: any,  account:any) {
         setVisible(true);
-        bagsActions(values ,account)
+        expenseActions(values,account)
             .then(success => {
                 if (success){
                     setOpened((o) => !o);
@@ -62,7 +52,7 @@ export default function NewBag({opened, setOpened}: { opened: boolean, setOpened
             <Modal
                 opened={opened}
                 onClose={() => setOpened((o) => !o)}
-                title="Add new Bag!"
+                title="Add new income!"
             >
                 <Box
                     sx={(theme) => ({
@@ -91,26 +81,44 @@ export default function NewBag({opened, setOpened}: { opened: boolean, setOpened
                         <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <NumberInput
                                 withAsterisk
-                                label="Goal"
-                                placeholder="enter an amount"
+                                label="Amount"
+                                placeholder="Enter an amount"
                                 radius="md"
+                                min ={0}
                                 size="md"
                                 icon={<MdOutlineAttachMoney/>}
-                                {...form.getInputProps('goal_balance')}
+                                {...form.getInputProps('amount')}
                             />
 
                         </SimpleGrid>
+
                         <Space h="md"/>
+
                         <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
                             <DatePicker
                                 withAsterisk
                                 placeholder="Pick date"
-                                label="End Date"
+                                label="Repeat date"
                                 radius="md"
                                 size="md"
                                 minDate={new Date()}
                                 icon={<MdDateRange/>}
-                                {...form.getInputProps('end_date')}
+                                {...form.getInputProps('repeat_date')}
+                            />
+                        </SimpleGrid>
+                        <Space h="md"/>
+                        <SimpleGrid cols={1} breakpoints={[{maxWidth: 'sm', cols: 1}]}>
+                            <Select
+                                label="Time"
+                                placeholder="Pick one"
+                                data={[
+                                    { value: "", label: "Select an option", disabled: true},
+                                    { value: 'monthly', label: 'Monthly' },
+                                    { value: 'twice a month', label: 'Twice a month' },
+                                    { value: 'weekly', label: 'Weekly' },
+
+                                ]}
+                                {...form.getInputProps('temporary_type')}
                             />
                         </SimpleGrid>
                         <Space h="md"/>
